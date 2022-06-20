@@ -1,7 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const validateLogin = () => {
+    const { email, password } = form;
+    const re = /\S+@\S+\.\S+/;
+    const emailValidation = re.test(email);
+
+    const PASSWORD_VALIDATION = 6;
+
+    if (emailValidation && password.length > PASSWORD_VALIDATION) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  };
+
+  useEffect(() => {
+    validateLogin();
+  }, [form]);
 
   const handleForm = ({ target }) => {
     setForm((prevForm) => ({
@@ -28,7 +47,7 @@ const Login = () => {
         value={ form.password }
         onChange={ handleForm }
       />
-      <button type="submit" data-testid="login-submit-btn">
+      <button type="submit" data-testid="login-submit-btn" disabled={ isDisabled }>
         Submit
       </button>
     </form>
