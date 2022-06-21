@@ -31,6 +31,13 @@ const Login = () => {
     }));
   };
 
+  const handleClick = () => {
+    history.push('/foods');
+    const { email } = form;
+    const userEmail = JSON.stringify({ email });
+    localStorage.setItem('user', userEmail);
+  };
+
   return (
     <form>
       <input
@@ -53,7 +60,7 @@ const Login = () => {
         type="submit"
         data-testid="login-submit-btn"
         disabled={ isDisabled }
-        onClick={ () => history.push('/foods') }
+        onClick={ handleClick }
       >
         Submit
       </button>
