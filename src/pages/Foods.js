@@ -9,7 +9,7 @@ const Foods = () => {
 
   return (
     <div>
-      <Header />
+      <Header title="Foods" />
     </div>
   );
 };
