@@ -37,4 +37,21 @@ describe(('Testa componente Login'), () => {
     expect(email.value).toBe('email');
     expect(password.value).toBe('password');
   });
+
+  it(('Verifica se o campo de email e senha são válidos para habilitar o botão'), () => {
+    renderWithRouter(<App />);
+    const email = screen.getByPlaceholderText(/email/i);
+    const password = screen.getByPlaceholderText(/password/i);
+    const button = screen.getByRole('button', { name: /submit/i });
+
+    userEvent.type(email, 'email');
+    userEvent.type(password, 'password');
+
+    expect(button).toBeDisabled();
+
+    userEvent.type(email, 'teste@teste.com');
+    userEvent.type(password, '1234567');
+
+    expect(button).toBeEnabled();
+  });
 });
