@@ -53,7 +53,7 @@ const Login = () => {
         type="submit"
         data-testid="login-submit-btn"
         disabled={ isDisabled }
-        onClick={ () => history.push('/home') }
+        onClick={ () => history.push('/foods') }
       >
         Submit
       </button>

@@ -4,12 +4,12 @@ import React from 'react';
 import App from '../App';
 import renderWithRouter from '../helper/renderWithRouter';
 
-describe(('Testa componente Home'), () => {
+describe(('Testa a página Foods'), () => {
   it(('Verifica se os tokens estão sendo inseridos corretamente'), () => {
     const { history } = renderWithRouter(<App />);
-    history.push('/home');
+    history.push('/foods');
     const { location: { pathname } } = history;
-    expect(pathname).toBe('/home');
+    expect(pathname).toBe('/foods');
 
     const mealsToken = localStorage.getItem('mealsToken');
     const cocktailsToken = localStorage.getItem('cocktailsToken');
