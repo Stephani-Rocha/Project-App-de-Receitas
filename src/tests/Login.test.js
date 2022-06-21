@@ -54,4 +54,19 @@ describe(('Testa componente Login'), () => {
 
     expect(button).toBeEnabled();
   });
+
+  it(('Verifica se ao fazer o login a página é redirecionada para /home'), () => {
+    const { history } = renderWithRouter(<App />);
+    const email = screen.getByPlaceholderText(/email/i);
+    const password = screen.getByPlaceholderText(/password/i);
+    const button = screen.getByRole('button', { name: /submit/i });
+
+    userEvent.type(email, 'teste@teste.com');
+    userEvent.type(password, '1234567');
+    expect(button).toBeEnabled();
+
+    userEvent.click(button);
+    const { location: { pathname } } = history;
+    expect(pathname).toBe('/home');
+  });
 });
