@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from '../helper/renderWithRouter';
 
+const EMAIL = 'teste@teste.com';
+
 describe(('Testa componente Login'), () => {
   it(('Verifica se os inputs de email e senha estão renderizados'), () => {
     const { history } = renderWithRouter(<App />);
@@ -49,7 +51,7 @@ describe(('Testa componente Login'), () => {
 
     expect(button).toBeDisabled();
 
-    userEvent.type(email, 'teste@teste.com');
+    userEvent.type(email, EMAIL);
     userEvent.type(password, '1234567');
 
     expect(button).toBeEnabled();
@@ -61,12 +63,29 @@ describe(('Testa componente Login'), () => {
     const password = screen.getByPlaceholderText(/password/i);
     const button = screen.getByRole('button', { name: /submit/i });
 
-    userEvent.type(email, 'teste@teste.com');
+    userEvent.type(email, EMAIL);
     userEvent.type(password, '1234567');
     expect(button).toBeEnabled();
 
     userEvent.click(button);
     const { location: { pathname } } = history;
     expect(pathname).toBe('/foods');
+  });
+
+  it(('Verifica se ao fazer o login o email é salvo no localStorage'), () => {
+    renderWithRouter(<App />);
+    const email = screen.getByPlaceholderText(/email/i);
+    const password = screen.getByPlaceholderText(/password/i);
+    const button = screen.getByRole('button', { name: /submit/i });
+
+    userEvent.type(email, EMAIL);
+    userEvent.type(password, '1234567');
+    expect(button).toBeEnabled();
+
+    userEvent.click(button);
+
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    expect(user.email).toBe(EMAIL);
   });
 });
