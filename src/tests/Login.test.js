@@ -67,6 +67,6 @@ describe(('Testa componente Login'), () => {
 
     userEvent.click(button);
     const { location: { pathname } } = history;
-    expect(pathname).toBe('/home');
+    expect(pathname).toBe('/foods');
   });
 });

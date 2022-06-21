@@ -3,7 +3,7 @@ import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/Login';
-import Home from './pages/Home';
+import Foods from './pages/Foods';
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
         <Route exact path="/">
           <Login />
         </Route>
-        <Route exact path="/home">
-          <Home />
+        <Route exact path="/foods">
+          <Foods />
         </Route>
       </Switch>
     </div>

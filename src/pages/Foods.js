@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const Home = () => {
+const Foods = () => {
   useEffect(() => {
     localStorage.setItem('mealsToken', '1');
     localStorage.setItem('cocktailsToken', '1');
@@ -11,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Foods;
