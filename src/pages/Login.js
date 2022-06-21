@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [isDisabled, setIsDisabled] = useState(true);
+  const history = useHistory();
 
   const validateLogin = () => {
     const { email, password } = form;
@@ -47,7 +49,12 @@ const Login = () => {
         value={ form.password }
         onChange={ handleForm }
       />
-      <button type="submit" data-testid="login-submit-btn" disabled={ isDisabled }>
+      <button
+        type="submit"
+        data-testid="login-submit-btn"
+        disabled={ isDisabled }
+        onClick={ () => history.push('/home') }
+      >
         Submit
       </button>
     </form>
