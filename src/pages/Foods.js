@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Header from '../components/Header';
 
 const Foods = () => {
   useEffect(() => {
@@ -7,7 +8,9 @@ const Foods = () => {
   }, []);
 
   return (
-    <div> aqui é a Home</div>
+    <div>
+      <Header />
+    </div>
   );
 };
 
