@@ -3,6 +3,7 @@ import Proptypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 const Header = ({ title }) => {
   const [renderButtons, setRenderButtons] = useState(true);
@@ -31,6 +32,7 @@ const Header = ({ title }) => {
           <img data-testid="search-top-btn" src={ searchIcon } alt="search" />
         </button>
       )}
+      <SearchBar />
     </div>
   );
 };
