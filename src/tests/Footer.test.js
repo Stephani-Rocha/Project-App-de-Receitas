@@ -21,4 +21,18 @@ describe('Testa o componente Footer', () => {
     expect(exploreBtn).toBeInTheDocument();
     expect(foodsBtn).toBeInTheDocument();
   });
+  it('Verifica se os ícones corretos são renderizados', () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/foods');
+    const { location: { pathname } } = history;
+
+    expect(pathname).toBe('/foods');
+    const drinkIcon = screen.getAllByRole('drinkIcon');
+    const exploreIcon = screen.getAllByRole('exploreIcon');
+    const mealIcon = screen.getAllByRole('mealIcon');
+
+    expect(drinkIcon).toBeInTheDocument();
+    expect(exploreIcon).toBeInTheDocument();
+    expect(mealIcon).toBeInTheDocument();
+  });
 });
