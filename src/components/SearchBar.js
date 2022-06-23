@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { getDrinks } from '../Redux/Slice/drinksSlice';
 import { getMeals } from '../Redux/Slice/mealsSlice';
 
 const SearchBar = () => {
   const [searchType, setSearchType] = useState('');
   const [search, setSearch] = useState('');
+  const [urlApi, setUrlApi] = useState('meal');
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/drinks') {
+      setUrlApi('cocktail');
+    }
+  }, [location]);
 
   const handleSearch = () => {
     if (searchType === 'firstLetter' && search.length > 1) {
@@ -13,12 +23,16 @@ const SearchBar = () => {
     }
 
     const endpoints = {
-      ingredient: `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`,
-      name: `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`,
-      firstLetter: `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`,
+      ingredient: `https://www.the${urlApi}db.com/api/json/v1/1/filter.php?i=${search}`,
+      name: `https://www.the${urlApi}db.com/api/json/v1/1/search.php?s=${search}`,
+      firstLetter: `https://www.the${urlApi}db.com/api/json/v1/1/search.php?f=${search}`,
     };
 
-    dispatch(getMeals(endpoints[searchType]));
+    if (location.pathname === '/foods') {
+      dispatch(getMeals(endpoints[searchType]));
+    } else {
+      dispatch(getDrinks(endpoints[searchType]));
+    }
   };
 
   return (
