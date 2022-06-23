@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { getDrinks } from '../Redux/Slice/drinksSlice';
 import { getMeals } from '../Redux/Slice/mealsSlice';
 
@@ -9,13 +9,26 @@ const SearchBar = () => {
   const [search, setSearch] = useState('');
   const [urlApi, setUrlApi] = useState('meal');
   const dispatch = useDispatch();
+  const meals = useSelector((state) => state.mealsSlice.meals);
+  const drinks = useSelector((state) => state.drinksSlice.drinks);
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (location.pathname === '/drinks') {
       setUrlApi('cocktail');
     }
   }, [location]);
+
+  useEffect(() => {
+    if (meals.length === 1) {
+      history.push(`/foods/${meals[0].idMeal}`);
+    }
+
+    if (drinks.length === 1) {
+      history.push(`/drinks/${drinks[0].idDrink}`);
+    }
+  }, [meals, drinks]);
 
   const handleSearch = () => {
     if (searchType === 'firstLetter' && search.length > 1) {
