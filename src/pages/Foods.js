@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 
 const Foods = () => {
@@ -10,6 +11,7 @@ const Foods = () => {
   return (
     <div>
       <Header title="Foods" />
+      <Footer />
     </div>
   );
 };
