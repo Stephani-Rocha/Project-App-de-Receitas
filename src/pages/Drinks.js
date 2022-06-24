@@ -24,7 +24,7 @@ const Drinks = () => {
 
       <button
         type="button"
-        ddata-testid="All-category-filter"
+        data-testid="All-category-filter"
       >
         All
 
