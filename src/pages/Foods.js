@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getMeals } from '../Redux/Slice/mealsSlice';
 
@@ -18,7 +19,6 @@ const Foods = () => {
   return (
     <div>
       <Header title="Foods" />
-
       <button
         type="button"
         ddata-testid="All-category-filter"
@@ -68,7 +68,7 @@ const Foods = () => {
           <h6>{ mealCard.strMeal }</h6>
         </div>
       )) }
-
+      <Footer />
     </div>
   );
 };

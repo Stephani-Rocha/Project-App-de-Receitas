@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 // import getDrinks from '../components/getDrinks';
 
@@ -66,7 +67,7 @@ const Drinks = () => {
           {/* <img src={ mealCard.strMealThumb } alt={ mealCard.strMeal } /> */}
           <h5>{ mealCard.strMeal }</h5>
         </div>))}
-
+      <Footer />
     </div>
   );
 };
