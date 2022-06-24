@@ -1,14 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 const RecipeDetails = () => {
+  const params = useParams();
+  const location = useLocation();
+  const [, setRecipeData] = useState([]);
+
   const recipeTest = [{ name: 'ingredient 1' }];
   const recommendedCardTest = [
     { title: 'test1', img: 'https://picsum.photos/80/80', category: 'test' },
     { title: 'test2', img: 'https://picsum.photos/80/80', category: 'test' },
   ];
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    const { pathname } = location;
+    const endpointType = pathname.split('/')[1];
+    const { id } = params;
+
+    const requestRecipe = async () => {
+      const endpoints = {
+        foods: `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
+        drinks: `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`,
+      };
+
+      const response = await fetch(endpoints[endpointType]);
+      const data = await response.json();
+      setRecipeData(data[endpointType]);
+    };
+
+    requestRecipe();
+  }, [params, location]);
 
   return (
     <div>
