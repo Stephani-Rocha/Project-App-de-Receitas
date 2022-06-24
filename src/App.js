@@ -14,6 +14,7 @@ import ExploreFoodsNationalities from './pages/ExploreFoodsNationalities';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
+import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
   return (
@@ -28,8 +29,12 @@ function App() {
         <Route exact path="/drinks">
           <Drinks />
         </Route>
-        <Route exact path="/foods/:id" />
-        <Route exact path="/drinks/:id" />
+        <Route exact path="/foods/:id">
+          <RecipeDetails />
+        </Route>
+        <Route exact path="/drinks/:id">
+          <RecipeDetails />
+        </Route>
         <Route exact path="/foods/:id/in-progress" />
         <Route exact path="/drinks/:id/in-progress" />
         <Route exact path="/explore">
