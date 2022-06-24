@@ -1,0 +1,11 @@
+.card-wrap {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 30px;
+  padding-bottom: 50px;
+}
+
+.img-card {
+  width: 80px;
+}
