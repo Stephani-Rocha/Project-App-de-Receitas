@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { getMeals } from '../Redux/Slice/mealsSlice';
-// import getDrinks from '../components/getDrinks';
+import './FoodAndDrink.css';
+import { getDrinks } from '../Redux/Slice/drinksSlice';
 
 const Drinks = () => {
   const dispatch = useDispatch();
@@ -12,10 +12,11 @@ const Drinks = () => {
     localStorage.setItem('mealsToken', '1');
     localStorage.setItem('cocktailsToken', '1');
 
-    dispatch(getMeals('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'));
+    dispatch(getDrinks('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'));
   }, []);
 
-  const Estados = useSelector((state) => state);
+  const drinks = useSelector((state) => state.drinksSlice.drinks);
+  const limitArray = 12;
 
   return (
     <div>
@@ -64,11 +65,19 @@ const Drinks = () => {
         5
       </button>
 
-      { Estados.mealsSlice.meals.map((mealCard) => (
-        <div key={ mealCard.idMeal }>
-          {/* <img src={ mealCard.strMealThumb } alt={ mealCard.strMeal } /> */}
-          <h5>{ mealCard.strMeal }</h5>
-        </div>))}
+      <div className="card-wrap">
+        { drinks.slice(0, limitArray).map((drinkCard, index) => (
+          <div key={ index } data-testid={ `${index}-recipe-card` }>
+            <img
+              src={ drinkCard.strDrinkThumb }
+              alt={ drinkCard.strDrink }
+              data-testid={ `${index}-card-img` }
+              className="img-card"
+            />
+            <h6 data-testid={ `${index}-card-name` }>{ drinkCard.strDrink }</h6>
+          </div>
+        )) }
+      </div>
       <Footer />
     </div>
   );

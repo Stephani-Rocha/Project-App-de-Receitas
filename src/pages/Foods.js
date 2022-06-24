@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getMeals } from '../Redux/Slice/mealsSlice';
+import './FoodAndDrink.css';
 
 const Foods = () => {
   const dispatch = useDispatch();
@@ -14,8 +15,9 @@ const Foods = () => {
     dispatch(getMeals('https://www.themealdb.com/api/json/v1/1/search.php?s='));
   }, []);
 
-  const Estados = useSelector((state) => state);
-  // const magicNumber = 12;
+  const meals = useSelector((state) => state.mealsSlice.meals);
+  const limitArray = 12;
+
   return (
     <div>
       <Header title="Foods" />
@@ -62,12 +64,19 @@ const Foods = () => {
         5
       </button>
 
-      { Estados.mealsSlice.meals.map((mealCard, index) => (
-        <div key={ index }>
-          <img src={ mealCard.strMealThumb } alt={ mealCard.strMeal } />
-          <h6>{ mealCard.strMeal }</h6>
-        </div>
-      )) }
+      <div className="card-wrap">
+        { meals.slice(0, limitArray).map((mealCard, index) => (
+          <div key={ index } data-testid={ `${index}-recipe-card` }>
+            <img
+              src={ mealCard.strMealThumb }
+              alt={ mealCard.strMeal }
+              data-testid={ `${index}-card-img` }
+              className="img-card"
+            />
+            <h6 data-testid={ `${index}-card-name` }>{ mealCard.strMeal }</h6>
+          </div>
+        )) }
+      </div>
       <Footer />
     </div>
   );
