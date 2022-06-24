@@ -9,7 +9,7 @@ export const getDrinks = createAsyncThunk(
   async (endpoint) => {
     const responde = await fetch(endpoint);
     const data = await responde.json();
-    return data.drinks;
+    return data.drinks === null ? [] : data.drinks;
   },
 );
 
