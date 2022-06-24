@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { getMeals } from '../Redux/Slice/mealsSlice';
 // import getDrinks from '../components/getDrinks';
 
 const Drinks = () => {
@@ -21,7 +23,7 @@ const Drinks = () => {
 
       <button
         type="button"
-        ddata-testid="All-category-filter"
+        data-testid="All-category-filter"
       >
         All
 
