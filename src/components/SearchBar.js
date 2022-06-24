@@ -46,6 +46,10 @@ const SearchBar = () => {
     } else {
       dispatch(getDrinks(endpoints[searchType]));
     }
+
+    if (meals.length < 1 || drinks.length < 1) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
   };
 
   return (
