@@ -35,6 +35,16 @@ const RecipeDetailsDrinks = () => {
   }, [recipeData]);
 
   useEffect(() => {
+    const requestFoods = async () => {
+      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+      const data = await response.json();
+      console.log(data);
+    };
+
+    requestFoods();
+  }, []);
+
+  useEffect(() => {
     const { id } = params;
 
     const requestRecipe = async () => {
