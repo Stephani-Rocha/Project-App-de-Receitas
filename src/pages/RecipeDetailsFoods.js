@@ -9,7 +9,7 @@ const RecipeDetailsFoods = () => {
   const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
-  const [isDone, setIsDone] = useState('');
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     if (Object.keys(recipeData).length > 0) {
@@ -47,10 +47,9 @@ const RecipeDetailsFoods = () => {
 
     getDone.forEach((done) => {
       if (done.id === recipeData.idMeal) {
-        console.log(recipeData);
-        setIsDone('done');
+        setIsDone(true);
       } else {
-        setIsDone('');
+        setIsDone(false);
       }
     });
   }, [recipeData]);
@@ -135,13 +134,16 @@ const RecipeDetailsFoods = () => {
                 ))
               }
             </div>
-            <button
-              type="button"
-              data-testid="start-recipe-btn"
-              className={ `${isDone} recipe-btn` }
-            >
-              Start Recipe
-            </button>
+            {
+              !isDone && (
+                <button
+                  type="button"
+                  data-testid="start-recipe-btn"
+                  className="recipe-btn"
+                >
+                  Start Recipe
+                </button>)
+            }
           </div>)
       }
     </div>
