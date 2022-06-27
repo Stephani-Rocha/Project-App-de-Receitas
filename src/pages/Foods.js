@@ -24,18 +24,19 @@ const Foods = () => {
 
   }, []);
 
-  const meals = useSelector((state) => state.mealsSlice.meals);
+  // const meals = useSelector((state) => state.mealsSlice.meals);
   const limitArray = 12;
   const category = useSelector((state) => state.mealCategorySlice.mealCategory);
   const limitArray2 = 5;
-  const filtredMeals = useSelector((state) => state.mealsFiltredSlice.filtredMeals);
+  // const filtredMeals = useSelector((state) => state.mealsFiltredSlice.filtredMeals);
 
-  const handlerCategory = (food) => {
-    const filtredMeal = meals
-      .filter((mealfiltred) => mealfiltred.strCategory === food)
-      .map((foodMap) => (foodMap));
-    console.log(filtredMeal);
-  };
+  // const handlerCategory = () => {
+  // const handlerCategory = (food) => {
+  //   const filtredMeal = meals
+  //     .filter((mealfiltred) => mealfiltred.strCategory === food)
+  //     .map((foodMap) => (foodMap));
+  //   console.log(filtredMeal);
+  // };
 
   return (
     <div>
@@ -53,7 +54,7 @@ const Foods = () => {
             key={ index }
             type="button"
             value={ categories.strCategory }
-            onClick={ (event) => handlerCategory(event.target.value) }
+            // onClick={ (event) => handlerCategory(event.target.value) }
             data-testid={ `${categories.strCategory}-category-filter` }
           >
             { categories.strCategory }
@@ -64,8 +65,10 @@ const Foods = () => {
 
       <div className="card-wrap">
 
-        { filtredMeals.length < 1
-          ? filtredMeals.slice(0, limitArray).map((mealCard, index) => (
+        {
+        // { filtredMeals.length < 1
+          // ? filtredMeals.slice(0, limitArray).map((mealCard, index) => (
+          filtredMeals.slice(0, limitArray).map((mealCard, index) => (
             <div key={ index } data-testid={ `${index}-recipe-card` }>
               <img
                 className="img-card"
@@ -75,18 +78,19 @@ const Foods = () => {
               />
               <h6 data-testid={ `${index}-card-name` }>{ mealCard.strMeal }</h6>
             </div>
+          // ))
+          // : meals.slice(0, limitArray).map((mealCards, index) => (
+          //   <div key={ index } data-testid={ `${index}-recipe-card` }>
+          //     <img
+          //       className="img-card"
+          //       src={ mealCards.strMealThumb }
+          //       alt={ mealCards.strMeal }
+          //       data-testid={ `${index}-card-img` }
+          //     />
+          //     <h6 data-testid={ `${index}-card-name` }>{ mealCards.strMeal }</h6>
+          //   </div>
           ))
-          : meals.slice(0, limitArray).map((mealCards, index) => (
-            <div key={ index } data-testid={ `${index}-recipe-card` }>
-              <img
-                className="img-card"
-                src={ mealCards.strMealThumb }
-                alt={ mealCards.strMeal }
-                data-testid={ `${index}-card-img` }
-              />
-              <h6 data-testid={ `${index}-card-name` }>{ mealCards.strMeal }</h6>
-            </div>
-          )) }
+        }
         <Footer />
       </div>
     </div>

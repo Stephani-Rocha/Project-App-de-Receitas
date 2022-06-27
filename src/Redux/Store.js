@@ -10,8 +10,8 @@ const Store = configureStore({
     drinksSlice,
     mealCategorySlice,
     drinkCategorySlice,
-    filtredMeals,
-    filtredDrinks,
+    // filtredMeals,
+    // filtredDrinks,
   },
 });
 
