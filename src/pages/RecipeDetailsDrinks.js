@@ -9,6 +9,7 @@ const RecipeDetailsDrinks = () => {
   const [recipeData, setRecipeData] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     if (Object.keys(recipeData).length > 0) {
@@ -40,6 +41,18 @@ const RecipeDetailsDrinks = () => {
 
     requestFoods();
   }, []);
+
+  useEffect(() => {
+    const getDone = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
+
+    getDone.forEach((done) => {
+      if (done.id === recipeData.idDrink) {
+        setIsDone(true);
+      } else {
+        setIsDone(false);
+      }
+    });
+  }, [recipeData]);
 
   useEffect(() => {
     const { id } = params;
@@ -124,13 +137,16 @@ const RecipeDetailsDrinks = () => {
                 ))
               }
             </div>
-            <button
-              type="button"
-              data-testid="start-recipe-btn"
-              className="recipe-btn"
-            >
-              Start Recipe
-            </button>
+            {
+              !isDone && (
+                <button
+                  type="button"
+                  data-testid="start-recipe-btn"
+                  className="recipe-btn"
+                >
+                  Start Recipe
+                </button>)
+            }
           </div>)
       }
     </div>
