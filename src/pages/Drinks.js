@@ -95,7 +95,6 @@ const Drinks = () => {
               src={ drinkCard.strDrinkThumb }
               alt={ drinkCard.strDrink }
               data-testid={ `${index}-card-img` }
-              className="img-card"
             />
             <h6 data-testid={ `${index}-card-name` }>{ drinkCard.strDrink }</h6>
           </div>

@@ -62,16 +62,16 @@ const Foods = () => {
         {
         // { filtredMeals.length < 1
           // ? filtredMeals.slice(0, limitArray).map((mealCard, index) => (
-          filtredMeals.slice(0, limitArray).map((mealCard, index) => (
-            <div key={ index } data-testid={ `${index}-recipe-card` }>
-              <img
-                className="img-card"
-                src={ mealCard.strMealThumb }
-                alt={ mealCard.strMeal }
-                data-testid={ `${index}-card-img` }
-              />
-              <h6 data-testid={ `${index}-card-name` }>{ mealCard.strMeal }</h6>
-            </div>
+          // filtredMeals.slice(0, limitArray).map((mealCard, index) => (
+          //   <div key={ index } data-testid={ `${index}-recipe-card` }>
+          //     <img
+          //       className="img-card"
+          //       src={ mealCard.strMealThumb }
+          //       alt={ mealCard.strMeal }
+          //       data-testid={ `${index}-card-img` }
+          //     />
+          //     <h6 data-testid={ `${index}-card-name` }>{ mealCard.strMeal }</h6>
+          //   </div>
           // ))
           // : meals.slice(0, limitArray).map((mealCards, index) => (
           //   <div key={ index } data-testid={ `${index}-recipe-card` }>
@@ -83,7 +83,7 @@ const Foods = () => {
           //     />
           //     <h6 data-testid={ `${index}-card-name` }>{ mealCards.strMeal }</h6>
           //   </div>
-          ))
+          // ))
         }
       </div>
       <div className="card-wrap">
