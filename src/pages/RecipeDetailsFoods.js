@@ -6,9 +6,10 @@ import './RecipeDetails.css';
 
 const RecipeDetailsFoods = () => {
   const params = useParams();
-  const [recipeData, setRecipeData] = useState([]);
+  const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [isDone, setIsDone] = useState('');
 
   useEffect(() => {
     if (Object.keys(recipeData).length > 0) {
@@ -40,6 +41,19 @@ const RecipeDetailsFoods = () => {
 
     requestDrinks();
   }, []);
+
+  useEffect(() => {
+    const getDone = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
+
+    getDone.forEach((done) => {
+      if (done.id === recipeData.idMeal) {
+        console.log(recipeData);
+        setIsDone('done');
+      } else {
+        setIsDone('');
+      }
+    });
+  }, [recipeData]);
 
   useEffect(() => {
     const { id } = params;
@@ -124,7 +138,7 @@ const RecipeDetailsFoods = () => {
             <button
               type="button"
               data-testid="start-recipe-btn"
-              className="recipe-btn"
+              className={ `${isDone} recipe-btn` }
             >
               Start Recipe
             </button>
