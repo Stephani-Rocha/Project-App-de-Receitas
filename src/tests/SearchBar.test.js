@@ -14,16 +14,18 @@ import drinksByName from './mock/mockDrinkAPI';
 // });
 const DELAY = 150;
 const BTN_ID = 'exec-search-btn';
-const TIMEOUT_DELAY = 1000;
 
 describe(('Testa componente SearchBar'), () => {
-  it(('Verifica se é salvo na store o resultado da API (meals) buscando pelo nome'),
-    async () => {
+  it.only(('Verifica se é salvo na store o resultado da API (meals) buscando pelo nome'),
+    () => {
       const { store } = renderWithRouterAndRedux(<App />, '/foods');
 
       rest.get('https://www.themealdb.com/api/json/v1/1/search.php?s=arrabiata', (_req, res, ctx) => (
         res(ctx.json(mealsByName), ctx.delay(DELAY))
       ));
+
+      const searchHide = screen.getByRole('img', { name: /search/i });
+      userEvent.click(searchHide);
 
       const searchInput = screen.getByRole('searchbox');
       const searchType = screen.getByText(/name/i);
@@ -33,8 +35,7 @@ describe(('Testa componente SearchBar'), () => {
       userEvent.click(searchType);
       userEvent.click(searchBtn);
 
-      setTimeout(() => (
-        expect(store.getState().mealsSlice).toEqual(mealsByName)), TIMEOUT_DELAY);
+      expect(store.getState().mealsSlice).toEqual(mealsByName);
     });
 
   it((`Verifica se é salvo na store o resultado da
@@ -54,8 +55,7 @@ describe(('Testa componente SearchBar'), () => {
     userEvent.click(searchType);
     userEvent.click(searchBtn);
 
-    setTimeout(() => (
-      expect(store.getState().mealsSlice).toEqual(mealsByIngredient)), TIMEOUT_DELAY);
+    expect(store.getState().mealsSlice).toEqual(mealsByIngredient);
   });
 
   it((`Verifica se é salvo na store o resultado da
@@ -75,8 +75,7 @@ describe(('Testa componente SearchBar'), () => {
     userEvent.click(searchType);
     userEvent.click(searchBtn);
 
-    setTimeout(() => (
-      expect(store.getState().mealsSlice).toEqual(mealsByFirstLetter)), TIMEOUT_DELAY);
+    expect(store.getState().mealsSlice).toEqual(mealsByFirstLetter);
   });
 
   it(('Verifica se é disparado um alert caso seja buscado com mais de uma letra'),
@@ -112,7 +111,6 @@ describe(('Testa componente SearchBar'), () => {
       userEvent.click(searchType);
       userEvent.click(searchBtn);
 
-      setTimeout(() => (
-        expect(store.getState().drinksSlice).toEqual(drinksByName)), TIMEOUT_DELAY);
+      expect(store.getState().drinksSlice).toEqual(drinksByName);
     });
 });

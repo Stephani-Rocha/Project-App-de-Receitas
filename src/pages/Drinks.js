@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getDrinks } from '../Redux/Slice/drinksSlice';
 import { getDrinkCategory } from '../Redux/Slice/drinkCategorySlice';
-import './foodAndDrink.css';
+import './FoodAndDrink.css';
 
 const Drinks = () => {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const Drinks = () => {
 
   const drinks = useSelector((state) => state.drinksSlice.drinks);
   const limitArray = 12;
+
   const estado = useSelector((state) => state);
   const category = useSelector((state) => state.drinkCategorySlice.drinkCategory);
   console.log(estado);
@@ -43,8 +44,49 @@ const Drinks = () => {
             { categories.strCategory }
           </button>
         ))}
-
       </div>
+      <button
+        type="button"
+        data-testid="All-category-filter"
+      >
+        All
+
+      </button>
+
+      <button
+        type="button"
+        data-testid="magicString"
+      >
+        1
+      </button>
+
+      <button
+        type="button"
+        data-testid="magicString"
+      >
+        2
+      </button>
+
+      <button
+        type="button"
+        data-testid="magicString"
+      >
+        3
+      </button>
+
+      <button
+        type="button"
+        data-testid="magicString"
+      >
+        4
+      </button>
+
+      <button
+        type="button"
+        data-testid="magicString"
+      >
+        5
+      </button>
 
       <div className="card-wrap">
         { drinks.slice(0, limitArray).map((drinkCard, index) => (
@@ -54,6 +96,7 @@ const Drinks = () => {
               src={ drinkCard.strDrinkThumb }
               alt={ drinkCard.strDrink }
               data-testid={ `${index}-card-img` }
+              className="img-card"
             />
             <h6 data-testid={ `${index}-card-name` }>{ drinkCard.strDrink }</h6>
           </div>
