@@ -6,9 +6,10 @@ import './RecipeDetails.css';
 
 const RecipeDetailsDrinks = () => {
   const params = useParams();
-  const [recipeData, setRecipeData] = useState([]);
+  const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [textBtn, setTextBtn] = useState('Start');
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
@@ -43,16 +44,25 @@ const RecipeDetailsDrinks = () => {
   }, []);
 
   useEffect(() => {
-    const getDone = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
+    const { id } = params;
+    const getDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
+    const getProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'))
+      || { cocktails: {} };
 
-    getDone.forEach((done) => {
+    getDoneRecipe.forEach((done) => {
       if (done.id === recipeData.idDrink) {
         setIsDone(true);
       } else {
         setIsDone(false);
       }
     });
-  }, [recipeData]);
+
+    if (id in getProgressRecipe.cocktails) {
+      setTextBtn('Continue');
+    } else {
+      setTextBtn('Start');
+    }
+  }, [recipeData, params]);
 
   useEffect(() => {
     const { id } = params;
@@ -144,7 +154,7 @@ const RecipeDetailsDrinks = () => {
                   data-testid="start-recipe-btn"
                   className="recipe-btn"
                 >
-                  Start Recipe
+                  {`${textBtn} Recipe`}
                 </button>)
             }
           </div>)
