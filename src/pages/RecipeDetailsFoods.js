@@ -104,13 +104,13 @@ const RecipeDetailsFoods = () => {
               allowFullScreen
               data-testid="video"
             />
-            <div className="recommeded-wrap">
+            <div className="recommended-wrap">
               {
                 recommended.map((card, index) => (
                   <div
                     key={ card.id }
                     data-testid={ `${index}-recomendation-card` }
-                    className="recommeded-card"
+                    className="recommended-card"
                   >
                     <img src={ card.strDrinkThumb } alt={ card.strDrink } />
                     <span>{ card.strCategory }</span>
@@ -121,7 +121,13 @@ const RecipeDetailsFoods = () => {
                 ))
               }
             </div>
-            <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
+            <button
+              type="button"
+              data-testid="start-recipe-btn"
+              className="recipe-btn"
+            >
+              Start Recipe
+            </button>
           </div>)
       }
     </div>
