@@ -8,11 +8,7 @@ const RecipeDetailsDrinks = () => {
   const params = useParams();
   const [recipeData, setRecipeData] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-
-  const recommendedCardTest = [
-    { title: 'test1', img: 'https://picsum.photos/80/80', category: 'test' },
-    { title: 'test2', img: 'https://picsum.photos/80/80', category: 'test' },
-  ];
+  const [recommended, setRecommended] = useState([]);
 
   useEffect(() => {
     if (Object.keys(recipeData).length > 0) {
@@ -38,7 +34,8 @@ const RecipeDetailsDrinks = () => {
     const requestFoods = async () => {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
       const data = await response.json();
-      console.log(data);
+      const limit = 6;
+      setRecommended(data.meals.slice(0, limit));
     };
 
     requestFoods();
@@ -61,7 +58,7 @@ const RecipeDetailsDrinks = () => {
     <div>
       {
         Object.keys(recipeData).length > 0 && (
-          <div>
+          <div className="details-container">
             <img
               src={ recipeData.strDrinkThumb }
               alt={ recipeData.strDrink }
@@ -96,8 +93,8 @@ const RecipeDetailsDrinks = () => {
             </ul>
             <p data-testid="instructions">{recipeData.strInstructions}</p>
             <iframe
-              width="560"
-              height="315"
+              width="330"
+              height="186"
               // src={ `https://www.youtube.com/embed/${recipeData.strYoutube.split('/watch?v=')[1]}` }
               title="YouTube video player"
               frameBorder="0"
@@ -110,15 +107,23 @@ const RecipeDetailsDrinks = () => {
               allowFullScreen
               data-testid="video"
             />
-            {
-              recommendedCardTest.map((card, index) => (
-                <div key={ index } data-testid={ `${index}-recomendation-card` }>
-                  <img src={ card.img } alt={ card.title } />
-                  <span>{ card.category }</span>
-                  <h3>{ card.title }</h3>
-                </div>
-              ))
-            }
+            <div className="recommeded-wrap">
+              {
+                recommended.map((card, index) => (
+                  <div
+                    key={ index }
+                    data-testid={ `${index}-recomendation-card` }
+                    className="recommeded-card"
+                  >
+                    <img src={ card.strMealThumb } alt={ card.strMeal } />
+                    <span>{ card.strCategory }</span>
+                    <h5 data-testid={ `${index}-recomendation-title` }>
+                      { card.strMeal }
+                    </h5>
+                  </div>
+                ))
+              }
+            </div>
             <button type="button" data-testid="start-recipe-btn">Start Recipe</button>
           </div>)
       }

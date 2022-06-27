@@ -1,3 +1,36 @@
+.details-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .img-details {
-  width: 400px;
+  width: 200px;
+}
+
+.recommeded-wrap {
+  align-items: center;
+  display: flex;
+  overflow-x: scroll;
+  padding: 5px;
+  width: 320px;
+}
+
+.recommeded-card {
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: 18px;
+}
+
+.recommeded-card h5 {
+  font-weight: 600;
+}
+
+.recommeded-card img {
+  border-radius: 5px 5px 0 0;
+  height: 90px;
+  object-fit: cover;
+  width: 120px;
 }
