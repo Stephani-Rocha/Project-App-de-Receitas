@@ -92,7 +92,6 @@ const Drinks = () => {
         { drinks.slice(0, limitArray).map((drinkCard, index) => (
           <div key={ index } data-testid={ `${index}-recipe-card` }>
             <img
-              className="img-card"
               src={ drinkCard.strDrinkThumb }
               alt={ drinkCard.strDrink }
               data-testid={ `${index}-card-img` }
