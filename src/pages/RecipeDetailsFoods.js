@@ -9,6 +9,7 @@ const RecipeDetailsFoods = () => {
   const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [textBtn, setTextBtn] = useState('Start');
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
@@ -43,7 +44,10 @@ const RecipeDetailsFoods = () => {
   }, []);
 
   useEffect(() => {
+    const { id } = params;
     const getDone = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
+    const getProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'))
+      || { meals: {} };
 
     getDone.forEach((done) => {
       if (done.id === recipeData.idMeal) {
@@ -52,7 +56,13 @@ const RecipeDetailsFoods = () => {
         setIsDone(false);
       }
     });
-  }, [recipeData]);
+
+    if (id in getProgressRecipe.meals) {
+      setTextBtn('Continue');
+    } else {
+      setTextBtn('Start');
+    }
+  }, [recipeData, params]);
 
   useEffect(() => {
     const { id } = params;
@@ -141,7 +151,7 @@ const RecipeDetailsFoods = () => {
                   data-testid="start-recipe-btn"
                   className="recipe-btn"
                 >
-                  Start Recipe
+                  {`${textBtn} Recipe`}
                 </button>)
             }
           </div>)
