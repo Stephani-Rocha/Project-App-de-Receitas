@@ -11,6 +11,7 @@ const RecipeDetailsFoods = () => {
   const [recommended, setRecommended] = useState([]);
   const [textBtn, setTextBtn] = useState('Start');
   const [isDone, setIsDone] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     if (Object.keys(recipeData).length > 0) {
@@ -77,6 +78,15 @@ const RecipeDetailsFoods = () => {
     requestRecipe();
   }, [params]);
 
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setShowMessage(true);
+
+    const TIME = 3000;
+
+    setTimeout(() => setShowMessage(false), TIME);
+  };
+
   return (
     <div>
       {
@@ -89,7 +99,8 @@ const RecipeDetailsFoods = () => {
               className="img-details"
             />
             <div>
-              <button type="button" data-testid="share-btn">
+              <button type="button" data-testid="share-btn" onClick={ handleShare }>
+                { showMessage && <span>Link copied! </span> }
                 <img src={ shareIcon } alt="share button" />
               </button>
               <button type="button" data-testid="favorite-btn">
