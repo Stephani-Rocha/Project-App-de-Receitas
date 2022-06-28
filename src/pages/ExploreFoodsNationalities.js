@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
-const numberTwelve = 12;
-
 function ExploreFoodsNationalities() {
   const [nationalityArray, setNationalityArray] = useState([]);
   async function getNationality() {
@@ -24,7 +22,7 @@ function ExploreFoodsNationalities() {
     try {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${target.value}`);
       const data = await response.json();
-      // setFoodCards(data.meals.slice(0, numberTwelve));
+      // setFoodCards(data.meals); // // renderizar na tela foods
       console.log(data);
     } catch (error) {
       console.log(error);
