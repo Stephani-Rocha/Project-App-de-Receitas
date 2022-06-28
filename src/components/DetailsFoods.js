@@ -1,90 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import './RecipeDetails.css';
 
-const RecipeDetailsDrinks = () => {
+const DetailsFoods = ({ recipeData, recommended, ingredients }) => {
   const params = useParams();
   const history = useHistory();
-  const [recipeData, setRecipeData] = useState({});
-  const [ingredients, setIngredients] = useState([]);
-  const [recommended, setRecommended] = useState([]);
   const [textBtn, setTextBtn] = useState('Start');
   const [isDone, setIsDone] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(recipeData).length > 0) {
-      const ingredientArray = Object.entries(recipeData)
-        .filter((ingredient) => ingredient[0].includes('Ingredient') && ingredient[1])
-        .map((ingredient) => ingredient[1]);
-
-      const measureArray = Object.entries(recipeData)
-        .filter((measure) => measure[0].includes('Measure') && measure[1])
-        .map((measure) => measure[1]);
-
-      const ingredientsAndMeasure = [];
-
-      ingredientArray.forEach((ingredient, index) => {
-        ingredientsAndMeasure.push({ [ingredient]: measureArray[index] });
-      });
-
-      setIngredients(ingredientsAndMeasure);
-    }
-  }, [recipeData]);
-
-  useEffect(() => {
-    const requestFoods = async () => {
-      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-      const data = await response.json();
-      const limit = 6;
-      setRecommended(data.meals.slice(0, limit));
-    };
-
-    requestFoods();
-  }, []);
-
-  useEffect(() => {
     const { id } = params;
     const getDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
     const getProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'))
-      || { cocktails: {} };
+      || { meals: {} };
 
     getDoneRecipe.forEach((done) => {
-      if (done.id === recipeData.idDrink) {
+      if (done.id === recipeData.idMeal) {
         setIsDone(true);
       } else {
         setIsDone(false);
       }
     });
 
-    if (id in getProgressRecipe.cocktails) {
+    if (id in getProgressRecipe.meals) {
       setTextBtn('Continue');
     } else {
       setTextBtn('Start');
     }
   }, [recipeData, params]);
 
-  useEffect(() => {
-    const { id } = params;
-
-    const requestRecipe = async () => {
-      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-      const data = await response.json();
-
-      setRecipeData(data.drinks[0]);
-    };
-
-    requestRecipe();
-  }, [params]);
-
   const handleClick = () => {
     const { id } = params;
 
-    history.push(`/drinks/${id}/in-progress`);
+    history.push(`/foods/${id}/in-progress`);
   };
-  
+
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     setShowMessage(true);
@@ -100,8 +53,8 @@ const RecipeDetailsDrinks = () => {
         Object.keys(recipeData).length > 0 && (
           <div className="details-container">
             <img
-              src={ recipeData.strDrinkThumb }
-              alt={ recipeData.strDrink }
+              src={ recipeData.strMealThumb }
+              alt={ recipeData.strMeal }
               data-testid="recipe-photo"
               className="img-details"
             />
@@ -114,11 +67,8 @@ const RecipeDetailsDrinks = () => {
                 <img src={ whiteHeartIcon } alt="favorite button" />
               </button>
             </div>
-            <h1 data-testid="recipe-title">{recipeData.strDrink}</h1>
-            <span data-testid="recipe-category">
-              { recipeData.strCategory }
-              { recipeData.strAlcoholic.length > 0 && ` (${recipeData.strAlcoholic})` }
-            </span>
+            <h1 data-testid="recipe-title">{recipeData.strMeal}</h1>
+            <span data-testid="recipe-category">{recipeData.strCategory}</span>
             <ul>
               {
                 ingredients.length
@@ -136,7 +86,7 @@ const RecipeDetailsDrinks = () => {
             <iframe
               width="330"
               height="186"
-              // src={ `https://www.youtube.com/embed/${recipeData.strYoutube.split('/watch?v=')[1]}` }
+              src={ `https://www.youtube.com/embed/${recipeData.strYoutube.split('/watch?v=')[1]}` }
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer;
@@ -152,14 +102,14 @@ const RecipeDetailsDrinks = () => {
               {
                 recommended.map((card, index) => (
                   <div
-                    key={ index }
+                    key={ card.id }
                     data-testid={ `${index}-recomendation-card` }
                     className="recommended-card"
                   >
-                    <img src={ card.strMealThumb } alt={ card.strMeal } />
+                    <img src={ card.strDrinkThumb } alt={ card.strDrink } />
                     <span>{ card.strCategory }</span>
                     <h5 data-testid={ `${index}-recomendation-title` }>
-                      { card.strMeal }
+                      { card.strDrink }
                     </h5>
                   </div>
                 ))
@@ -182,4 +132,10 @@ const RecipeDetailsDrinks = () => {
   );
 };
 
-export default RecipeDetailsDrinks;
+DetailsFoods.propTypes = {
+  recipeData: PropTypes.objectOf(PropTypes.string).isRequired,
+  recommended: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+};
+
+export default DetailsFoods;
