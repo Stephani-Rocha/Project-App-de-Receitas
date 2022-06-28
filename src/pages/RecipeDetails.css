@@ -1,3 +1,46 @@
+.details-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
 .img-details {
-  width: 400px;
+  width: 200px;
+}
+
+.recommended-wrap {
+  align-items: center;
+  display: flex;
+  overflow-x: scroll;
+  padding: 5px;
+  width: 320px;
+}
+
+.recommended-card {
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: 18px;
+}
+
+.recommended-card h5 {
+  font-weight: 600;
+}
+
+.recommended-card img {
+  border-radius: 5px 5px 0 0;
+  height: 90px;
+  object-fit: cover;
+  width: 120px;
+}
+
+.recipe-btn {
+  background-color: rgb(0, 210, 0);
+  border: none;
+  bottom: 0;
+  padding: 8px;
+  position: fixed;
+  width: 90%;
 }

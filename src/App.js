@@ -18,6 +18,8 @@ import RecipeDetailsFoods from './pages/RecipeDetailsFoods';
 import RecipeDetailsDrinks from './pages/RecipeDetailsDrinks';
 import RecipeInProgressDrinks from './pages/RecipeInProgressDrinks';
 import RecipeInProgressFoods from './pages/RecipeInProgressFoods';
+import RecipeDetails from './pages/RecipeDetails';
+
 
 function App() {
   return (
@@ -33,10 +35,10 @@ function App() {
           <Drinks />
         </Route>
         <Route exact path="/foods/:id">
-          <RecipeDetailsFoods />
+          <RecipeDetails />
         </Route>
         <Route exact path="/drinks/:id">
-          <RecipeDetailsDrinks />
+          <RecipeDetails />
         </Route>
         <Route exact path="/foods/:id/in-progress">
           <RecipeInProgressFoods />
