@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import './RecipeDetails.css';
 
 const RecipeDetailsFoods = () => {
   const params = useParams();
+  const history = useHistory();
   const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
@@ -78,6 +79,12 @@ const RecipeDetailsFoods = () => {
     requestRecipe();
   }, [params]);
 
+  const handleClick = () => {
+    const { id } = params;
+
+    history.push(`/foods/${id}/in-progress`);
+  };
+  
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     setShowMessage(true);
@@ -161,6 +168,7 @@ const RecipeDetailsFoods = () => {
                   type="button"
                   data-testid="start-recipe-btn"
                   className="recipe-btn"
+                  onClick={ handleClick }
                 >
                   {`${textBtn} Recipe`}
                 </button>)
