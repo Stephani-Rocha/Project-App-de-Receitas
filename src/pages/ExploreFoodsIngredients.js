@@ -37,7 +37,7 @@ function ExploreFoodsIngredients() {
 
   return (
     <>
-      <Header title="Explore Foods" />
+      <Header title="Explore Ingredients" />
       <div>
         {ingredientsFood !== null
           && ingredientsFood !== undefined

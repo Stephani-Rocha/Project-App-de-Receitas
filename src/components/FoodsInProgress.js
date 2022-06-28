@@ -5,6 +5,7 @@ const FoodsInProgress = () => {
   const params = useParams();
   const [recipeInProgress, setRecipesInProgress] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [finishedIngredient, setFinishedIngredient] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +37,12 @@ const FoodsInProgress = () => {
     }
   }, [recipeInProgress]);
 
+  const handleChangeCheckbox = (ingredient) => {
+    setFinishedIngredient((prevFinish) => [...prevFinish, ingredient]);
+  };
+
+  // preciso desenvolver a lógica reversa, onde ao clicar no checkbox pela 2ª vez, de um ingrediente finalizado, preciso tirar o risco;
+
   return (
     <div>
       {Object.keys(recipeInProgress).length > 0 && (
@@ -57,8 +64,21 @@ const FoodsInProgress = () => {
                     key={ index }
                     data-testid={ `${index}-ingredient-step` }
                   >
-                    <input type="checkbox" />
-                    { `${Object.keys(ingredient)[0]} - ${Object.values(ingredient)[0]}` }
+                    <input
+                      type="checkbox"
+                      onChange={
+                        () => handleChangeCheckbox(ingredient)
+                      }
+                      name={ index }
+                    />
+                    {finishedIngredient.includes(ingredient) ? (
+                      <s>
+                        { `${Object.keys(ingredient)[0]} -
+                        ${Object.values(ingredient)[0]}` }
+                      </s>
+                    ) : (
+                      `${Object.keys(ingredient)[0]} -${Object.values(ingredient)[0]}`
+                    )}
                   </li>
                 ))
             }
