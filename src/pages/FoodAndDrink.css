@@ -9,3 +9,11 @@
 .img-card {
   width: 80px;
 }
+
+.filter-btn-wrap {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 10px;
+  padding-bottom: 30px;
+}
