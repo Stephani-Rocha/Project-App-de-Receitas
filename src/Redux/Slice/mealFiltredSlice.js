@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  filtredMeals: [],
+  meals: [],
 };
 
 export const getFiltredMeals = createAsyncThunk(
   'filtredMeals',
   async (endpoint) => {
-    const responde = await fetch(endpoint);
-    const data = await responde.json();
-    console.log(data.meals);
-    return data.meals;
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data.meals === null ? [] : data.meals;
   },
 );
 
@@ -18,7 +17,7 @@ const mealsFiltredSlice = createSlice({
   name: 'filtredMeals',
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(getMeals.fulfilled, (state, action) => {
+    builder.addCase(getFiltredMeals.fulfilled, (state, action) => {
       state.meals = [...action.payload];
     });
   },
