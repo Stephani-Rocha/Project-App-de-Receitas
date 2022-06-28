@@ -14,8 +14,7 @@ import ExploreFoodsNationalities from './pages/ExploreFoodsNationalities';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
-import RecipeDetailsFoods from './pages/RecipeDetailsFoods';
-import RecipeDetailsDrinks from './pages/RecipeDetailsDrinks';
+import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
   return (
@@ -31,10 +30,10 @@ function App() {
           <Drinks />
         </Route>
         <Route exact path="/foods/:id">
-          <RecipeDetailsFoods />
+          <RecipeDetails />
         </Route>
         <Route exact path="/drinks/:id">
-          <RecipeDetailsDrinks />
+          <RecipeDetails />
         </Route>
         <Route exact path="/foods/:id/in-progress" />
         <Route exact path="/drinks/:id/in-progress" />
