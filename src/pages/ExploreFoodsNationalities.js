@@ -31,8 +31,12 @@ function ExploreFoodsNationalities() {
         >
           { nationalityArray !== null && nationalityArray !== undefined
             && nationalityArray.map((item, index) => (
-              <option key={ index }>
-                { item }
+              <option
+                key={ index }
+                value={ item.strArea }
+                data-testid={ `${item.strArea}-option` }
+              >
+                { item.strArea }
               </option>
             ))}
         </select>
