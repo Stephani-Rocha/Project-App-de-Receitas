@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import './RecipeDetails.css';
 
 const RecipeDetailsDrinks = () => {
   const params = useParams();
+  const history = useHistory();
   const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
@@ -76,6 +77,12 @@ const RecipeDetailsDrinks = () => {
 
     requestRecipe();
   }, [params]);
+
+  const handleClick = () => {
+    const { id } = params;
+
+    history.push(`/drinks/${id}/in-progress`);
+  };
 
   return (
     <div>
@@ -153,6 +160,7 @@ const RecipeDetailsDrinks = () => {
                   type="button"
                   data-testid="start-recipe-btn"
                   className="recipe-btn"
+                  onClick={ handleClick }
                 >
                   {`${textBtn} Recipe`}
                 </button>)
