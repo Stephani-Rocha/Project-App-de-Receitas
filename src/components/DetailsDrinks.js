@@ -1,36 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-const DetailsDrinks = ({ recipeData, recommended, ingredients }) => {
+const DetailsDrinks = ({ recipeData, recommended, ingredients,
+  textBtn, isDone, isFavorite }) => {
   const params = useParams();
   const history = useHistory();
-  const [textBtn, setTextBtn] = useState('Start');
-  const [isDone, setIsDone] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-
-  useEffect(() => {
-    const { id } = params;
-    const getDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
-    const getProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'))
-      || { cocktails: {} };
-
-    getDoneRecipe.forEach((done) => {
-      if (done.id === recipeData.idDrink) {
-        setIsDone(true);
-      } else {
-        setIsDone(false);
-      }
-    });
-
-    if (id in getProgressRecipe.cocktails) {
-      setTextBtn('Continue');
-    } else {
-      setTextBtn('Start');
-    }
-  }, [recipeData, params]);
 
   const handleClick = () => {
     const { id } = params;
@@ -63,8 +42,21 @@ const DetailsDrinks = ({ recipeData, recommended, ingredients }) => {
                 { showMessage && <span>Link copied! </span> }
                 <img src={ shareIcon } alt="share button" />
               </button>
-              <button type="button" data-testid="favorite-btn">
-                <img src={ whiteHeartIcon } alt="favorite button" />
+              <button type="button">
+                {
+                  isFavorite ? (
+                    <img
+                      src={ blackHeartIcon }
+                      alt="favorite button"
+                      data-testid="favorite-btn"
+                    />
+                  ) : (
+                    <img
+                      src={ whiteHeartIcon }
+                      alt="favorite button"
+                      data-testid="favorite-btn"
+                    />)
+                }
               </button>
             </div>
             <h1 data-testid="recipe-title">{recipeData.strDrink}</h1>
@@ -139,6 +131,9 @@ DetailsDrinks.propTypes = {
   recipeData: PropTypes.objectOf(PropTypes.string).isRequired,
   recommended: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   ingredients: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  textBtn: PropTypes.string.isRequired,
+  isDone: PropTypes.bool.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
 };
 
 export default DetailsDrinks;
