@@ -2,7 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouter from '../helper/renderWithRouter';
+import renderWithRouter from '../Redux/helper/renderWithRouter';
 
 describe(('Testa a página Drinks'), () => {
   it(('Verifica se existe o título e os botões de "Search" e "Profile"'), () => {

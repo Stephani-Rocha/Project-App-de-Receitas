@@ -1,11 +1,9 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
-import { rest } from 'msw';
+import { screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouterAndRedux from '../helper/renderWithRouterAndRedux';
-import { mealsByFirstLetter, mealsByIngredient, mealsByName } from './mock/mockMealAPI';
-import drinksByName from './mock/mockDrinkAPI';
+import renderWithRouterAndRedux from '../Redux/helper/renderWithRouterAndRedux';
+import { categories, meals, mealsSearchName } from './mock/SearchBarMock';
 
 // jest.mock();
 // global.fetch = jest.fn();
@@ -17,12 +15,16 @@ const BTN_ID = 'exec-search-btn';
 
 describe(('Testa componente SearchBar'), () => {
   it.only(('Verifica se é salvo na store o resultado da API (meals) buscando pelo nome'),
-    () => {
+    async () => {
+      // jest.spyOn(global, 'alert').mockImplementation();
+      jest.mock();
+      global.fetch = jest.fn();
+      global.fetch.mockResolvedValue({
+        json: jest.fn().mockResolvedValueOnce(meals)
+          .mockResolvedValueOnce(categories)
+          .mockResolvedValue(mealsSearchName),
+      });
       const { store } = renderWithRouterAndRedux(<App />, '/foods');
-
-      rest.get('https://www.themealdb.com/api/json/v1/1/search.php?s=arrabiata', (_req, res, ctx) => (
-        res(ctx.json(mealsByName), ctx.delay(DELAY))
-      ));
 
       const searchHide = screen.getByRole('img', { name: /search/i });
       userEvent.click(searchHide);
@@ -31,11 +33,11 @@ describe(('Testa componente SearchBar'), () => {
       const searchType = screen.getByText(/name/i);
       const searchBtn = screen.getByTestId(BTN_ID);
 
-      userEvent.type(searchInput, 'arrabiata');
+      userEvent.type(searchInput, 'cor');
       userEvent.click(searchType);
       userEvent.click(searchBtn);
 
-      expect(store.getState().mealsSlice).toEqual(mealsByName);
+      await wait(() => expect(store.getState().mealsSlice).toEqual(mealsSearchName));
     });
 
   it((`Verifica se é salvo na store o resultado da
