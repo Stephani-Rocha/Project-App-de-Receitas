@@ -17,6 +17,7 @@ import FavoriteRecipes from './pages/FavoriteRecipes';
 import RecipeInProgressDrinks from './pages/RecipeInProgressDrinks';
 import RecipeInProgressFoods from './pages/RecipeInProgressFoods';
 import RecipeDetails from './pages/RecipeDetails';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -60,6 +61,9 @@ function App() {
         </Route>
         <Route exact path="/explore/foods/nationalities">
           <ExploreFoodsNationalities />
+        </Route>
+        <Route exact path="/explore/drinks/nationalities">
+          <NotFound />
         </Route>
         <Route exact path="/profile">
           <Profile />
