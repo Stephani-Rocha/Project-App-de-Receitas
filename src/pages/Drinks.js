@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getDrinks } from '../Redux/Slice/drinksSlice';
@@ -40,9 +41,9 @@ const Drinks = () => {
     } if (!allCategory && category2 !== drink) {
       dispatch(getFiltredDrinks(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${drink}`));
       setCategory2('');
-    } else {
+    } if (!allCategory && category2 === drink) {
       setDrinkCategory(drinks);
-      setAllCategory(false);
+      setAllCategory(true);
       setCategory2('');
     }
   };
@@ -81,7 +82,11 @@ const Drinks = () => {
 
         { drinkCategory.length >= 1
           ? drinkCategory.slice(0, limitArray).map((drinkCard, index) => (
-            <div key={ index } data-testid={ `${index}-recipe-card` }>
+            <Link
+              key={ index }
+              data-testid={ `${index}-recipe-card` }
+              to={ `/drinks/${drinkCard.idDrink}` }
+            >
               <img
                 className="img-card"
                 src={ drinkCard.strDrinkThumb }
@@ -89,10 +94,14 @@ const Drinks = () => {
                 data-testid={ `${index}-card-img` }
               />
               <h6 data-testid={ `${index}-card-name` }>{drinkCard.strDrink}</h6>
-            </div>
+            </Link>
           ))
           : drinks.slice(0, limitArray).map((drinkCards, index) => (
-            <div key={ index } data-testid={ `${index}-recipe-card` }>
+            <Link
+              key={ index }
+              data-testid={ `${index}-recipe-card` }
+              to={ `/drinks/${drinkCards.idDrink}` }
+            >
               <img
                 className="img-card"
                 src={ drinkCards.strDrinkThumb }
@@ -100,7 +109,7 @@ const Drinks = () => {
                 data-testid={ `${index}-card-img` }
               />
               <h6 data-testid={ `${index}-card-name` }>{drinkCards.strDrink}</h6>
-            </div>
+            </Link>
           ))}
       </div>
       <Footer />

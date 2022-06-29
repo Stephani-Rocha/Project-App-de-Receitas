@@ -4,6 +4,35 @@ import RecipeDetailsFoods from '../components/DetailsFoods';
 import RecipeDetailsDrinks from '../components/DetailsDrinks';
 import './RecipeDetails.css';
 
+const getDoneRecipes = (recipeData, id) => {
+  const getDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes')) || [{}];
+  return getDoneRecipe.some((done) => done.id === recipeData[id]);
+};
+
+const getProgressRecipes = (params, key) => {
+  const { id } = params;
+  const getProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'))
+    || { [key]: {} };
+  console.log(key);
+  if (id in getProgressRecipe[key]) {
+    return 'Continue';
+  }
+
+  return 'Start';
+};
+
+const getFavoriteRecipes = (recipeData, id) => {
+  const getFavoriteRecipe = JSON.parse(localStorage.getItem('favoriteRecipes')) || [{}];
+
+  return getFavoriteRecipe.some((favorite) => {
+    if (favorite.id === recipeData[id]) {
+      return true;
+    }
+
+    return false;
+  });
+};
+
 const RecipeDetails = () => {
   const location = useLocation();
   const params = useParams();
@@ -12,10 +41,15 @@ const RecipeDetails = () => {
     recommended: 'cocktail',
     objectTypeRecipe: 'meals',
     objectTypeRecommended: 'drinks',
+    favorite: 'idMeal',
+    progress: 'meals',
   });
   const [recipeData, setRecipeData] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [textBtn, setTextBtn] = useState('Start');
+  const [isDone, setIsDone] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const isMounted = useRef(false);
 
   useEffect(() => {
@@ -39,6 +73,11 @@ const RecipeDetails = () => {
   }, [recipeData]);
 
   useEffect(() => {
+    setIsDone(getDoneRecipes(recipeData, apiType.favorite));
+    setIsFavorite(getFavoriteRecipes(recipeData, apiType.favorite));
+  }, [apiType, recipeData, params]);
+
+  useEffect(() => {
     const { pathname } = location;
 
     if (pathname.includes('/drinks')) {
@@ -47,6 +86,8 @@ const RecipeDetails = () => {
         recommended: 'meal',
         objectTypeRecipe: 'drinks',
         objectTypeRecommended: 'meals',
+        favorite: 'idDrink',
+        progress: 'cocktails',
       });
     }
   }, [location]);
@@ -72,29 +113,37 @@ const RecipeDetails = () => {
       if (isMounted.current) {
         requestRecipe();
         requestRecommeded();
+        setTextBtn(getProgressRecipes(params, apiType.progress));
       } else {
         isMounted.current = true;
       }
     } else {
       requestRecipe();
       requestRecommeded();
+      setTextBtn(getProgressRecipes(params, apiType.progress));
     }
   }, [apiType, params, location]);
 
   return (
     <div>
       {
-        location.pathname.includes('/drinks') ? (
+        location.pathname.includes('drinks') ? (
           <RecipeDetailsDrinks
             recipeData={ recipeData }
             recommended={ recommended }
             ingredients={ ingredients }
+            textBtn={ textBtn }
+            isDone={ isDone }
+            isFavorite={ isFavorite }
           />
         ) : (
           <RecipeDetailsFoods
             recipeData={ recipeData }
             recommended={ recommended }
             ingredients={ ingredients }
+            textBtn={ textBtn }
+            isDone={ isDone }
+            isFavorite={ isFavorite }
           />
         )
       }
