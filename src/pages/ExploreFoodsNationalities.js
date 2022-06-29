@@ -18,17 +18,32 @@ function ExploreFoodsNationalities() {
     }
   }
 
+  async function AllNationalities() {
+    try {
+      const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+      const data = await response.json();
+      setFoodCards(data.meals);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getNationality();
+    AllNationalities();
   }, []);
 
   async function setFilterNationality({ target }) {
-    try {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${target.value}`);
-      const data = await response.json();
-      setFoodCards(data.meals); // // renderizar na tela foods
-    } catch (error) {
-      console.log(error);
+    if (target.value === 'All') {
+      AllNationalities();
+    } else {
+      try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${target.value}`);
+        const data = await response.json();
+        setFoodCards(data.meals); // // renderizar na tela foods
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -41,6 +56,13 @@ function ExploreFoodsNationalities() {
           onChange={ setFilterNationality }
           data-testid="explore-by-nationality-dropdown"
         >
+          <option
+            value="All"
+            data-testid="All-option"
+          >
+            All
+
+          </option>
           { nationalityArray !== null && nationalityArray !== undefined
             && nationalityArray.map((item, index) => (
               <option
