@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 // import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -59,6 +60,23 @@ function ExploreFoodsIngredients() {
             </div>
           ))}
       </div>
+
+      { ingredientsFood.slice(0, numberTwelve).map((mealCards, index) => (
+        <Link
+          key={ index }
+          data-testid={ `${index}-recipe-card` }
+          to={ `/foods/${mealCards.idMeal}` }
+        >
+          <img
+            className="img-card"
+            src={ mealCards.strMealThumb }
+            alt={ mealCards.strMeal }
+            data-testid={ `${index}-card-img` }
+          />
+          <h6 data-testid={ `${index}-card-name` }>{mealCards.strMeal}</h6>
+        </Link>
+      ))}
+
       <Footer />
     </>
   );

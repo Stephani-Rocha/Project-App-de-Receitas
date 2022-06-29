@@ -28,7 +28,7 @@ function ExploreDrinksIngredients() {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`);
       const data = await response.json();
       console.log(data);
-      // setArrayDrinks(data.drinks); // colocar na tela principal sem o provider
+      // setArrayDrinks(data.drinks); // colocar na tela principal de drinks sem o provider
       history.push('/drinks');
     } catch (error) {
       console.log(error);
