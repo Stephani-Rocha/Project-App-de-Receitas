@@ -28,6 +28,11 @@ const SearchBar = () => {
     if (drinks.length === 1) {
       history.push(`/drinks/${drinks[0].idDrink}`);
     }
+
+    if ((location.pathname.includes('/drinks') && drinks.length < 1)
+      || (location.pathname.includes('/foods') && meals.length < 1)) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    }
   }, [meals, drinks]);
 
   const handleSearch = () => {
@@ -45,10 +50,6 @@ const SearchBar = () => {
       dispatch(getMeals(endpoints[searchType]));
     } else {
       dispatch(getDrinks(endpoints[searchType]));
-    }
-
-    if (meals.length < 1 || drinks.length < 1) {
-      global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
   };
 
