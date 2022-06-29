@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import './DrinksProgress.css';
 
 const FoodsInProgress = () => {
   const params = useParams();
+  const history = useHistory();
   const [recipeInProgress, setRecipesInProgress] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [finishedIngredient, setFinishedIngredient] = useState([]);
@@ -20,11 +22,11 @@ const FoodsInProgress = () => {
   useEffect(() => {
     if (Object.keys(recipeInProgress).length > 0) {
       const ingredientArray = Object.entries(recipeInProgress)
-        .filter((ingredient) => ingredient[0].includes('Ingredient') && ingredient[1]) // não entendi essa linha;
+        .filter((ingredient) => ingredient[0].includes('Ingredient') && ingredient[1])
         .map((ingredient) => ingredient[1]);
 
       const measureArray = Object.entries(recipeInProgress)
-        .filter((measure) => measure[0].includes('Measure') && measure[1]) // não entendi essa linha;
+        .filter((measure) => measure[0].includes('Measure') && measure[1])
         .map((measure) => measure[1]);
 
       const ingredientsAndMeasure = [];
@@ -37,8 +39,9 @@ const FoodsInProgress = () => {
     }
   }, [recipeInProgress]);
 
-  const handleChangeCheckbox = (ingredient) => {
-    setFinishedIngredient((prevFinish) => [...prevFinish, ingredient]);
+  const handleChangeCheckbox = ({ target }) => {
+    const { name } = target;
+    setFinishedIngredient((prevState) => ({ ...prevState, [name]: !prevState[name] }));
   };
 
   // preciso desenvolver a lógica reversa, onde ao clicar no checkbox pela 2ª vez, de um ingrediente finalizado, preciso tirar o risco;
@@ -51,6 +54,7 @@ const FoodsInProgress = () => {
             src={ recipeInProgress.strMealThumb }
             alt={ recipeInProgress.strMeal }
             data-testid="recipe-photo"
+            className="image"
           />
           <h1 data-testid="recipe-title">{recipeInProgress.strMeal}</h1>
           <button type="button" data-testid="share-btn">compartilhar</button>
@@ -63,22 +67,17 @@ const FoodsInProgress = () => {
                   <li
                     key={ index }
                     data-testid={ `${index}-ingredient-step` }
+                    className={ finishedIngredient[index]
+                      ? 'fineshed-ingredient' : '' }
                   >
                     <input
                       type="checkbox"
-                      onChange={
-                        () => handleChangeCheckbox(ingredient)
-                      }
+                      onChange={ handleChangeCheckbox }
                       name={ index }
+                      checked={ finishedIngredient[index] }
                     />
-                    {finishedIngredient.includes(ingredient) ? (
-                      <s>
-                        { `${Object.keys(ingredient)[0]} -
-                        ${Object.values(ingredient)[0]}` }
-                      </s>
-                    ) : (
-                      `${Object.keys(ingredient)[0]} -${Object.values(ingredient)[0]}`
-                    )}
+                    {`${Object.keys(ingredient)[0]} -${Object.values(ingredient)[0]}`}
+                    )
                   </li>
                 ))
             }
@@ -87,8 +86,9 @@ const FoodsInProgress = () => {
           <button
             type="button"
             data-testid="finish-recipe-btn"
+            onClick={ () => history.push('/done-recipes') }
           >
-            finalizar a receita
+            Finish Recipe
           </button>
         </div>
       )}
