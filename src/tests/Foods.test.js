@@ -2,7 +2,7 @@ import React from 'react';
 // import { screen } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouter from '../Redux/helper/renderWithRouter';
+import renderWithRouter from './helper/renderWithRouter';
 
 describe(('Testa a página Foods'), () => {
   it(('Verifica se os tokens estão sendo inseridos corretamente'), () => {

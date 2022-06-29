@@ -6,7 +6,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const DetailsFoods = ({ recipeData, recommended, ingredients,
-  textBtn, isDone, isFavorite }) => {
+  textBtn, isDone, isFavorite, handleFavorite }) => {
   const params = useParams();
   const history = useHistory();
   const [showMessage, setShowMessage] = useState(false);
@@ -42,7 +42,7 @@ const DetailsFoods = ({ recipeData, recommended, ingredients,
                 { showMessage && <span>Link copied! </span> }
                 <img src={ shareIcon } alt="share button" />
               </button>
-              <button type="button">
+              <button type="button" onClick={ handleFavorite }>
                 {
                   isFavorite ? (
                     <img
@@ -131,6 +131,7 @@ DetailsFoods.propTypes = {
   textBtn: PropTypes.string.isRequired,
   isDone: PropTypes.bool.isRequired,
   isFavorite: PropTypes.bool.isRequired,
+  handleFavorite: PropTypes.func.isRequired,
 };
 
 export default DetailsFoods;

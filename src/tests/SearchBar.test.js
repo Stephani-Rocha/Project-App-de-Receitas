@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouterAndRedux from '../Redux/helper/renderWithRouterAndRedux';
+import renderWithRouterAndRedux from './helper/renderWithRouterAndRedux';
 import { categories, meals, mealsSearchName } from './mock/SearchBarMock';
 
 // jest.mock();

@@ -124,6 +124,10 @@ const RecipeDetails = () => {
     }
   }, [apiType, params, location]);
 
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <div>
       {
@@ -135,6 +139,7 @@ const RecipeDetails = () => {
             textBtn={ textBtn }
             isDone={ isDone }
             isFavorite={ isFavorite }
+            handleFavorite={ handleFavorite }
           />
         ) : (
           <RecipeDetailsFoods
@@ -144,6 +149,7 @@ const RecipeDetails = () => {
             textBtn={ textBtn }
             isDone={ isDone }
             isFavorite={ isFavorite }
+            handleFavorite={ handleFavorite }
           />
         )
       }

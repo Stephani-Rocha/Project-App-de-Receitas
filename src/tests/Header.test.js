@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
 import App from '../App';
-import renderWithRouter from '../Redux/helper/renderWithRouter';
+import renderWithRouter from './helper/renderWithRouter';
 
 const titleId = 'page-title';
 const profileId = 'profile-top-btn';
