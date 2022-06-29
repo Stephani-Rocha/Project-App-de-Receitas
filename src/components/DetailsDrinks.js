@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
@@ -6,10 +6,27 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const DetailsDrinks = ({ recipeData, recommended, ingredients,
-  textBtn, isDone, isFavorite, handleFavorite }) => {
+  textBtn, isDone }) => {
   const params = useParams();
   const history = useHistory();
   const [showMessage, setShowMessage] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const getFavoriteRecipes = () => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+
+    const favorited = favoriteRecipes
+      .some((favorite) => favorite.id === recipeData.idDrink);
+
+    setIsFavorite(favorited);
+
+    return favoriteRecipes;
+  };
+
+  useEffect(() => {
+    getFavoriteRecipes();
+    console.log(recipeData);
+  }, [recipeData]);
 
   const handleClick = () => {
     const { id } = params;
@@ -24,6 +41,35 @@ const DetailsDrinks = ({ recipeData, recommended, ingredients,
     const TIME = 3000;
 
     setTimeout(() => setShowMessage(false), TIME);
+  };
+
+  const handleFavorite = () => {
+    const favoriteRecipes = getFavoriteRecipes();
+
+    if (!isFavorite) {
+      const newFavorite = {
+        id: recipeData.idDrink,
+        type: 'drink',
+        nationality: '',
+        category: recipeData.strCategory,
+        alcoholicOrNot: recipeData.strAlcoholic,
+        name: recipeData.strDrink,
+        image: recipeData.strDrinkThumb,
+      };
+
+      if (favoriteRecipes.length > 0) {
+        localStorage.setItem('favoriteRecipes',
+          JSON.stringify([...favoriteRecipes, newFavorite]));
+      } else {
+        localStorage.setItem('favoriteRecipes', JSON.stringify([newFavorite]));
+      }
+    } else {
+      const { id } = params;
+      const removedRecipe = favoriteRecipes.filter((e) => e.id !== id);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(removedRecipe));
+    }
+
+    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -133,8 +179,6 @@ DetailsDrinks.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   textBtn: PropTypes.string.isRequired,
   isDone: PropTypes.bool.isRequired,
-  isFavorite: PropTypes.bool.isRequired,
-  handleFavorite: PropTypes.func.isRequired,
 };
 
 export default DetailsDrinks;
