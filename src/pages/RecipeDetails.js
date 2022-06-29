@@ -13,24 +13,11 @@ const getProgressRecipes = (params, key) => {
   const { id } = params;
   const getProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'))
     || { [key]: {} };
-  console.log(key);
   if (id in getProgressRecipe[key]) {
     return 'Continue';
   }
 
   return 'Start';
-};
-
-const getFavoriteRecipes = (recipeData, id) => {
-  const getFavoriteRecipe = JSON.parse(localStorage.getItem('favoriteRecipes')) || [{}];
-
-  return getFavoriteRecipe.some((favorite) => {
-    if (favorite.id === recipeData[id]) {
-      return true;
-    }
-
-    return false;
-  });
 };
 
 const RecipeDetails = () => {
@@ -49,7 +36,6 @@ const RecipeDetails = () => {
   const [recommended, setRecommended] = useState([]);
   const [textBtn, setTextBtn] = useState('Start');
   const [isDone, setIsDone] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
   const isMounted = useRef(false);
 
   useEffect(() => {
@@ -74,8 +60,7 @@ const RecipeDetails = () => {
 
   useEffect(() => {
     setIsDone(getDoneRecipes(recipeData, apiType.favorite));
-    setIsFavorite(getFavoriteRecipes(recipeData, apiType.favorite));
-  }, [apiType, recipeData, params]);
+  }, [apiType, recipeData]);
 
   useEffect(() => {
     const { pathname } = location;
@@ -114,6 +99,7 @@ const RecipeDetails = () => {
         requestRecipe();
         requestRecommeded();
         setTextBtn(getProgressRecipes(params, apiType.progress));
+        // setIsDone(getDoneRecipes(recipeData, apiType.favorite));
       } else {
         isMounted.current = true;
       }
@@ -121,12 +107,9 @@ const RecipeDetails = () => {
       requestRecipe();
       requestRecommeded();
       setTextBtn(getProgressRecipes(params, apiType.progress));
+      // setIsDone(getDoneRecipes(recipeData, apiType.favorite));
     }
   }, [apiType, params, location]);
-
-  const handleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
 
   return (
     <div>
@@ -138,8 +121,6 @@ const RecipeDetails = () => {
             ingredients={ ingredients }
             textBtn={ textBtn }
             isDone={ isDone }
-            isFavorite={ isFavorite }
-            handleFavorite={ handleFavorite }
           />
         ) : (
           <RecipeDetailsFoods
@@ -148,8 +129,6 @@ const RecipeDetails = () => {
             ingredients={ ingredients }
             textBtn={ textBtn }
             isDone={ isDone }
-            isFavorite={ isFavorite }
-            handleFavorite={ handleFavorite }
           />
         )
       }
