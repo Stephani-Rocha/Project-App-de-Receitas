@@ -54,21 +54,23 @@ function ExploreFoodsNationalities() {
         </select>
       </label>
 
-      { foodCards.slice(0, numberTwelve).map((mealCards, index) => (
-        <Link
-          key={ index }
-          data-testid={ `${index}-recipe-card` }
-          to={ `/foods/${mealCards.idMeal}` }
-        >
-          <img
-            className="img-card"
-            src={ mealCards.strMealThumb }
-            alt={ mealCards.strMeal }
-            data-testid={ `${index}-card-img` }
-          />
-          <h6 data-testid={ `${index}-card-name` }>{mealCards.strMeal}</h6>
-        </Link>
-      ))}
+      <div>
+        { foodCards.slice(0, numberTwelve).map((mealCards, index) => (
+          <Link
+            key={ index }
+            data-testid={ `${index}-recipe-card` }
+            to={ `/foods/${mealCards.idMeal}` }
+          >
+            <img
+              className="img-card"
+              src={ mealCards.strMealThumb }
+              alt={ mealCards.strMeal }
+              data-testid={ `${index}-card-img` }
+            />
+            <h6 data-testid={ `${index}-card-name` }>{mealCards.strMeal}</h6>
+          </Link>
+        ))}
+      </div>
 
       <Footer />
     </div>
