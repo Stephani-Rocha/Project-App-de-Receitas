@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
+const numberTwelve = 12;
+
 function ExploreFoodsNationalities() {
   const [nationalityArray, setNationalityArray] = useState([]);
+  const [foodCards, setFoodCards] = useState([]);
   async function getNationality() {
     try {
       const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list');
@@ -22,8 +26,7 @@ function ExploreFoodsNationalities() {
     try {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${target.value}`);
       const data = await response.json();
-      // setFoodCards(data.meals); // // renderizar na tela foods
-      console.log(data);
+      setFoodCards(data.meals); // // renderizar na tela foods
     } catch (error) {
       console.log(error);
     }
@@ -50,6 +53,22 @@ function ExploreFoodsNationalities() {
             ))}
         </select>
       </label>
+
+      { foodCards.slice(0, numberTwelve).map((mealCards, index) => (
+        <Link
+          key={ index }
+          data-testid={ `${index}-recipe-card` }
+          to={ `/foods/${mealCards.idMeal}` }
+        >
+          <img
+            className="img-card"
+            src={ mealCards.strMealThumb }
+            alt={ mealCards.strMeal }
+            data-testid={ `${index}-card-img` }
+          />
+          <h6 data-testid={ `${index}-card-name` }>{mealCards.strMeal}</h6>
+        </Link>
+      ))}
 
       <Footer />
     </div>
