@@ -9,6 +9,7 @@ const DoneRecipes = () => {
   useEffect(() => {
     const getDoneRecipes = () => {
       const recipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+
       setDoneRecipes(recipes);
     };
 
@@ -45,7 +46,11 @@ const DoneRecipes = () => {
                 style={ { width: '80px' } }
               />
               <span data-testid={ `${index}-horizontal-top-text` }>
-                {`${recipe.nationality} - ${recipe.category}`}
+                {
+                  recipe.type === 'food'
+                    ? `${recipe.nationality} - ${recipe.category}`
+                    : `${recipe.alcoholicOrNot}`
+                }
               </span>
               <h5 data-testid={ `${index}-horizontal-name` }>
                 {recipe.name}
