@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
 const DoneRecipes = () => {
-  const doneTest = [{
-    id: '1',
-    type: 'food',
-    nationality: '',
-    category: '',
-    alcoholicOrNot: '',
-    name: '',
-    image: '',
-    doneDate: '',
-    tags: ['Pasta', 'Curry'],
-  }];
+  const [doneRecipes, setDoneRecipes] = useState([]);
+
+  useEffect(() => {
+    const getDoneRecipes = () => {
+      const recipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+      setDoneRecipes(recipes);
+    };
+
+    getDoneRecipes();
+  }, []);
 
   return (
     <div>
@@ -25,7 +24,7 @@ const DoneRecipes = () => {
       </div>
       <div>
         {
-          doneTest.map((recipe, index) => (
+          doneRecipes.map((recipe, index) => (
             <>
               <img
                 src={ recipe.image }
@@ -33,7 +32,7 @@ const DoneRecipes = () => {
                 data-testid={ `${index}-horizontal-image` }
               />
               <span data-testid={ `${index}-horizontal-top-text` }>
-                {recipe.category}
+                {`${recipe.nationality} - ${recipe.category}`}
               </span>
               <h5 data-testid={ `${index}-horizontal-name` }>
                 {recipe.name}
@@ -41,11 +40,12 @@ const DoneRecipes = () => {
               <span data-testid={ `${index}-horizontal-done-date` }>
                 {recipe.doneDate}
               </span>
-              <button
-                type="button"
-                data-testid={ `${index}-horizontal-share-btn` }
-              >
-                <img src={ shareIcon } alt="share button" />
+              <button type="button">
+                <img
+                  src={ shareIcon }
+                  alt="share button"
+                  data-testid={ `${index}-horizontal-share-btn` }
+                />
               </button>
               {
                 recipe.tags.map((tag, i) => (
