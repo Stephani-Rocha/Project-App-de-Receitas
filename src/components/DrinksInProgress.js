@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './DrinksProgress.css';
 
 const DrinksInProgress = () => {
   const params = useParams();
-  const history = useHistory();
   const [recipeInProgressDrinks, setRecipeInProgressDrinks] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [finishedIngredient, setFinishedIngredient] = useState([]);
+  const [disabledBtn, setDisabledBtn] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +44,19 @@ const DrinksInProgress = () => {
     const { name } = target;
     setFinishedIngredient((prevState) => ({ ...prevState, [name]: !prevState[name] }));
   };
+
+  useEffect(() => {
+    const arrayFinishedIngredient = Object.values(finishedIngredient);
+    if (arrayFinishedIngredient.length === ingredients.length) {
+      if (arrayFinishedIngredient.every((checked) => checked)) {
+        setDisabledBtn(false);
+      } else {
+        setDisabledBtn(true);
+      }
+    } else {
+      setDisabledBtn(true);
+    }
+  }, [finishedIngredient, ingredients]);
 
   return (
     <div>
@@ -91,7 +104,7 @@ const DrinksInProgress = () => {
           <button
             type="button"
             data-testid="finish-recipe-btn"
-            onClick={ () => history.push('/done-recipes') }
+            disabled={ disabledBtn }
           >
             Finish Recipe
           </button>
