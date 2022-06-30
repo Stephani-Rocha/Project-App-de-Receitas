@@ -14,19 +14,21 @@ const Foods = () => {
   const [allCategory, setAllCategory] = useState(true);
   const [category2, setCategory2] = useState([]);
 
-  useEffect(() => {
-    localStorage.setItem('mealsToken', '1');
-    localStorage.setItem('cocktailsToken', '1');
-
-    dispatch(getMeals('https://www.themealdb.com/api/json/v1/1/search.php?s='));
-    dispatch(getMealCategory('https://www.themealdb.com/api/json/v1/1/list.php?c=list'));
-  }, [dispatch]);
-
   const meals = useSelector((state) => state.mealsSlice.meals);
   const limitArray = 12;
   const category = useSelector((state) => state.mealCategorySlice.mealCategory);
   const limitArray2 = 5;
   const filtredMeals = useSelector((state) => state.mealFiltredSlice.meals);
+
+  useEffect(() => {
+    localStorage.setItem('mealsToken', '1');
+    localStorage.setItem('cocktailsToken', '1');
+
+    if (meals.length === 0) {
+      dispatch(getMeals('https://www.themealdb.com/api/json/v1/1/search.php?s='));
+    }
+    dispatch(getMealCategory('https://www.themealdb.com/api/json/v1/1/list.php?c=list'));
+  }, [dispatch]);
 
   const handlerAllCategory = () => {
     setMealCategory(meals);

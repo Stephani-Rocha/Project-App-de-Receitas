@@ -14,19 +14,22 @@ const Drinks = () => {
   const [allCategory, setAllCategory] = useState(true);
   const [category2, setCategory2] = useState([]);
 
-  useEffect(() => {
-    localStorage.setItem('mealsToken', '1');
-    localStorage.setItem('cocktailsToken', '1');
-
-    dispatch(getDrinks('https://www.thecocktaildb.com/api/json/v1/1/search.php?s='));
-    dispatch(getDrinkCategory('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'));
-  }, [dispatch]);
-
   const drinks = useSelector((state) => state.drinksSlice.drinks);
   const limitArray = 12;
   const category = useSelector((state) => state.drinkCategorySlice.drinkCategory);
   const limitArray2 = 5;
   const filtredDrinks = useSelector((state) => state.drinksFiltredSlice.drinks);
+
+  useEffect(() => {
+    localStorage.setItem('mealsToken', '1');
+    localStorage.setItem('cocktailsToken', '1');
+
+    if (drinks.length === 0) {
+      dispatch(getDrinks('https://www.thecocktaildb.com/api/json/v1/1/search.php?s='));
+    }
+
+    dispatch(getDrinkCategory('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'));
+  }, [dispatch]);
 
   const handlerAllCategory = () => {
     setDrinkCategory(drinks);

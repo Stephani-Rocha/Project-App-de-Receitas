@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { getDrinks } from '../Redux/Slice/drinksSlice';
 
 const numberTwelve = 12;
 
 function ExploreDrinksIngredients() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [ingredientsDrink, setIngredientsDrink] = useState([]);
 
   async function getIngredient() {
@@ -23,17 +26,10 @@ function ExploreDrinksIngredients() {
     getIngredient();
   }, []);
 
-  async function ingredientBtn(ingredient) {
-    try {
-      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`);
-      const data = await response.json();
-      console.log(data);
-      // setArrayDrinks(data.drinks); // colocar na tela principal de drinks sem o provider
-      history.push('/drinks');
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const handleButton = async (ingredient) => {
+    await dispatch(getDrinks(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`));
+    history.push('/drinks');
+  };
 
   return (
     <>
@@ -45,7 +41,7 @@ function ExploreDrinksIngredients() {
             <div key={ index } data-testid={ `${index}-ingredient-card` }>
               <button
                 type="button"
-                onClick={ () => ingredientBtn(ingredient.strIngredient1) }
+                onClick={ () => handleButton(ingredient.strIngredient1) }
               >
                 <img
                   src={ `https://www.thecocktaildb.com/images/ingredients/${ingredient.strIngredient1}-Small.png` }
