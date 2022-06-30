@@ -4,6 +4,7 @@ import shareIcon from '../images/shareIcon.svg';
 
 const DoneRecipes = () => {
   const [doneRecipes, setDoneRecipes] = useState([]);
+  const [showMessage, setShowMessage] = useState({});
 
   useEffect(() => {
     const getDoneRecipes = () => {
@@ -13,6 +14,17 @@ const DoneRecipes = () => {
 
     getDoneRecipes();
   }, []);
+
+  const handleShare = (type, id) => {
+    const url = `http://${window.location.host}/${type}s/${id}`;
+    navigator.clipboard.writeText(url);
+    setShowMessage((prevState) => ({ ...prevState, [id]: true }));
+
+    const TIME = 3000;
+
+    setTimeout(() => setShowMessage((prevState) => ({ ...prevState, [id]: false })),
+      TIME);
+  };
 
   return (
     <div>
@@ -30,6 +42,7 @@ const DoneRecipes = () => {
                 src={ recipe.image }
                 alt={ recipe.name }
                 data-testid={ `${index}-horizontal-image` }
+                style={ { width: '80px' } }
               />
               <span data-testid={ `${index}-horizontal-top-text` }>
                 {`${recipe.nationality} - ${recipe.category}`}
@@ -40,7 +53,8 @@ const DoneRecipes = () => {
               <span data-testid={ `${index}-horizontal-done-date` }>
                 {recipe.doneDate}
               </span>
-              <button type="button">
+              <button type="button" onClick={ () => handleShare(recipe.type, recipe.id) }>
+                { showMessage[recipe.id] && <span>Link copied! </span> }
                 <img
                   src={ shareIcon }
                   alt="share button"
