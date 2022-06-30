@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { getMeals } from '../Redux/Slice/mealsSlice';
 
 const numberTwelve = 12;
 
 function ExploreFoodsIngredients() {
-  // const history = useHistory();
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [ingredientsFood, setIngredientsFood] = useState([]);
 
   async function getIngredient() {
@@ -24,17 +26,10 @@ function ExploreFoodsIngredients() {
     getIngredient();
   }, []);
 
-  async function ingredientBtn(ingredient) {
-    try {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`);
-      const data = await response.json();
-      setIngredientsFood(data.meals);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  // history.push('/foods');
+  const handleButton = async (ingredient) => {
+    await dispatch(getMeals(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`));
+    history.push('/foods');
+  };
 
   return (
     <>
@@ -46,7 +41,7 @@ function ExploreFoodsIngredients() {
             <div key={ index } data-testid={ `${index}-ingredient-card` }>
               <button
                 type="button"
-                onClick={ () => ingredientBtn(ingredient.strIngredient) }
+                onClick={ () => handleButton(ingredient.strIngredient) }
               >
                 <img
                   src={ `https://www.themealdb.com/images/ingredients/${ingredient.strIngredient}-Small.png` }
@@ -60,23 +55,6 @@ function ExploreFoodsIngredients() {
             </div>
           ))}
       </div>
-
-      { ingredientsFood.slice(0, numberTwelve).map((mealCards, index) => (
-        <Link
-          key={ index }
-          data-testid={ `${index}-recipe-card` }
-          to={ `/foods/${mealCards.idMeal}` }
-        >
-          <img
-            className="img-card"
-            src={ mealCards.strMealThumb }
-            alt={ mealCards.strMeal }
-            data-testid={ `${index}-card-img` }
-          />
-          <h6 data-testid={ `${index}-card-name` }>{mealCards.strMeal}</h6>
-        </Link>
-      ))}
-
       <Footer />
     </>
   );
