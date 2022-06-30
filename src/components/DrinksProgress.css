@@ -1,8 +1,8 @@
-.fineshed-ingredient{
-    text-decoration: line-through solid rgb(0, 0, 0);
+.fineshed-ingredient {
+  text-decoration: line-through solid black;
 }
 
-.image{
-    width: 80px;
-    height: 80px;
+.image {
+  height: 80px;
+  width: 80px;
 }
