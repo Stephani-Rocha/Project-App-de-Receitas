@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const FavoriteRecipes = () => {
+  const history = useHistory();
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [favoriteFiltered, setFavoriteFiltered] = useState([]);
   const [showMessage, setShowMessage] = useState({});
 
   useEffect(() => {
@@ -13,11 +16,25 @@ const FavoriteRecipes = () => {
 
       setFavoriteRecipes(recipes);
 
-      // setDoneFiltered(recipes);
+      setFavoriteFiltered(recipes);
     };
 
     getFavoriteRecipes();
   }, []);
+
+  const getAllDone = () => {
+    setFavoriteFiltered(favoriteRecipes);
+  };
+
+  const getDrinksDone = () => {
+    const drinkDone = favoriteRecipes.filter((recipe) => recipe.type === 'drink');
+    setFavoriteFiltered(drinkDone);
+  };
+
+  const getFoodsDone = () => {
+    const drinkDone = favoriteRecipes.filter((recipe) => recipe.type === 'food');
+    setFavoriteFiltered(drinkDone);
+  };
 
   const handleShare = (type, id) => {
     const url = `http://${window.location.host}/${type}s/${id}`;
@@ -34,7 +51,12 @@ const FavoriteRecipes = () => {
     const removedRecipe = favoriteRecipes.filter((e) => e.id !== id);
     localStorage.setItem('favoriteRecipes', JSON.stringify(removedRecipe));
 
+    setFavoriteFiltered(removedRecipe);
     setFavoriteRecipes(removedRecipe);
+  };
+
+  const handleClick = (type, id) => {
+    history.push(`/${type}s/${id}`);
   };
 
   return (
@@ -44,31 +66,31 @@ const FavoriteRecipes = () => {
         <button
           type="button"
           data-testid="filter-by-all-btn"
-          // onClick={ getAllDone }
+          onClick={ getAllDone }
         >
           All
         </button>
         <button
           type="button"
           data-testid="filter-by-food-btn"
-          // onClick={ getFoodsDone }
+          onClick={ getFoodsDone }
         >
           Food
         </button>
         <button
           type="button"
           data-testid="filter-by-drink-btn"
-          // onClick={ getDrinksDone }
+          onClick={ getDrinksDone }
         >
           Drink
         </button>
       </div>
       {
-        favoriteRecipes.map((recipe, index) => (
+        favoriteFiltered.map((recipe, index) => (
           <div key={ recipe.id }>
             <button
               type="button"
-              // onClick={ () => handleClick(recipe.type, recipe.id) }
+              onClick={ () => handleClick(recipe.type, recipe.id) }
             >
               <img
                 src={ recipe.image }
