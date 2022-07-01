@@ -12,6 +12,7 @@ const FavoriteRecipes = () => {
       const recipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
 
       setFavoriteRecipes(recipes);
+
       // setDoneFiltered(recipes);
     };
 
@@ -27,6 +28,13 @@ const FavoriteRecipes = () => {
 
     setTimeout(() => setShowMessage((prevState) => ({ ...prevState, [id]: false })),
       TIME);
+  };
+
+  const handleFavorite = (id) => {
+    const removedRecipe = favoriteRecipes.filter((e) => e.id !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(removedRecipe));
+
+    setFavoriteRecipes(removedRecipe);
   };
 
   return (
@@ -87,11 +95,10 @@ const FavoriteRecipes = () => {
                 data-testid={ `${index}-horizontal-share-btn` }
               />
             </button>
-            <button type="button">
-              {/* { showMessage[recipe.id] && <span>Link copied! </span> } */}
+            <button type="button" onClick={ () => handleFavorite(recipe.id) }>
               <img
                 src={ blackHeartIcon }
-                alt="share button"
+                alt="favorite button"
                 data-testid={ `${index}-horizontal-favorite-btn` }
               />
             </button>
