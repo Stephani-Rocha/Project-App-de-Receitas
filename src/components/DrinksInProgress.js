@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import './DrinksProgress.css';
 
 const DrinksInProgress = () => {
   const params = useParams();
+  const history = useHistory();
   const [recipeInProgressDrinks, setRecipeInProgressDrinks] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [finishedIngredient, setFinishedIngredient] = useState([]);
@@ -105,6 +106,7 @@ const DrinksInProgress = () => {
             type="button"
             data-testid="finish-recipe-btn"
             disabled={ disabledBtn }
+            onClick={ () => history.push('/done-recipes') }
           >
             Finish Recipe
           </button>
