@@ -5,6 +5,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const FavoriteRecipes = () => {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const [showMessage, setShowMessage] = useState({});
 
   useEffect(() => {
     const getFavoriteRecipes = () => {
@@ -16,6 +17,17 @@ const FavoriteRecipes = () => {
 
     getFavoriteRecipes();
   }, []);
+
+  const handleShare = (type, id) => {
+    const url = `http://${window.location.host}/${type}s/${id}`;
+    navigator.clipboard.writeText(url);
+    setShowMessage((prevState) => ({ ...prevState, [id]: true }));
+
+    const TIME = 3000;
+
+    setTimeout(() => setShowMessage((prevState) => ({ ...prevState, [id]: false })),
+      TIME);
+  };
 
   return (
     <div>
@@ -67,8 +79,8 @@ const FavoriteRecipes = () => {
                 {recipe.name}
               </h5>
             </button>
-            <button type="button">
-              {/* { showMessage[recipe.id] && <span>Link copied! </span> } */}
+            <button type="button" onClick={ () => handleShare(recipe.type, recipe.id) }>
+              { showMessage[recipe.id] && <span>Link copied! </span> }
               <img
                 src={ shareIcon }
                 alt="share button"
