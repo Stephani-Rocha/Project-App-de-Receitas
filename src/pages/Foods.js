@@ -61,7 +61,6 @@ const Foods = () => {
 
   return (
     <div>
-
       <Header title="Foods" />
       <div className="filter-btn-wrap">
         <button
