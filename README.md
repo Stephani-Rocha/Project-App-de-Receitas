@@ -1,16 +1,12 @@
-# 🚧 README em construção 🚧
+# Project App de Receitas 🍲 🍹
 
-<!-- Olá, Tryber!
+# Contexto
+Nesse projeto desenvolvemos um app de receitas, utilizando o que há de mais moderno dentro do ecossistema React: Hooks e Context API!
 
-Esse é apenas um arquivo inicial para o README do seu projeto.
+Nele é possível ver, buscar, filtrar, favoritar e acompanhar o progresso de preparação de receitas e drinks!
 
-É essencial que você preencha esse documento por conta própria, ok?
+A base de dados são 2 APIs distintas, uma para comidas e outra para bebidas.
 
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-
-⚠️ IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
-
--->
+## Tecnologias usadas
+Front-end:
+> Desenvolvido usando: React, Hooks, Context API, RTL.
