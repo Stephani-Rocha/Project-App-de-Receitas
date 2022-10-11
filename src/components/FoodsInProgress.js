@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import './DrinksProgress.css';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+
+const setLocalStorage = () => {
+  const cocktails = {};
+  const meals = {};
+  localStorage.setItem('inProgressRecipes', JSON.stringify({ cocktails, meals }));
+};
 
 const FoodsInProgress = () => {
   const params = useParams();
@@ -9,6 +17,7 @@ const FoodsInProgress = () => {
   const [ingredients, setIngredients] = useState([]);
   const [finishedIngredient, setFinishedIngredient] = useState([]);
   const [disabledBtn, setDisabledBtn] = useState(true);
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,9 +49,26 @@ const FoodsInProgress = () => {
     }
   }, [recipeInProgress]);
 
-  const handleChangeCheckbox = ({ target }) => {
+  const handleChangeCheckbox = ({ target }, index) => {
     const { name } = target;
+    const { id } = params;
     setFinishedIngredient((prevState) => ({ ...prevState, [name]: !prevState[name] }));
+
+    const getStorage2 = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (getStorage2.meals[id].includes(index)) {
+      const filterStorage = getStorage2.meals[id]
+        .filter((ingredient) => ingredient !== index);
+      localStorage.setItem('inProgressRecipes', JSON.stringify({
+        ...getStorage2, meals: { [id]: filterStorage } }));
+    } else {
+      const newSetStorage2 = {
+        ...getStorage2,
+        meals: {
+          [id]: [...getStorage2.meals[id], index],
+        },
+      };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newSetStorage2));
+    }
   };
 
   useEffect(() => {
@@ -58,6 +84,39 @@ const FoodsInProgress = () => {
     }
   }, [finishedIngredient, ingredients]);
 
+  useEffect(() => {
+    const { id } = params;
+    if (!JSON.parse(localStorage.getItem('inProgressRecipes'))) {
+      setLocalStorage();
+    } else {
+      const getStorage3 = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const objeto = getStorage3.meals[id]
+        .map((idIngredient) => ({ [idIngredient]: true }));
+      setFinishedIngredient(objeto);
+    }
+    const { meals } = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const saveRecipes = Object.keys(meals).some((idRecipe) => idRecipe === id);
+    if (!saveRecipes) {
+      const getStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const newSetStorage = {
+        ...getStorage,
+        meals: {
+          ...getStorage.meals,
+          [id]: [],
+        },
+      };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newSetStorage));
+    }
+  }, []);
+
+  const handleButtonFavorite = () => {
+    if (!favorite) {
+      setFavorite(true);
+    } else {
+      setFavorite(false);
+    }
+  };
+
   return (
     <div>
       {Object.keys(recipeInProgress).length > 0 && (
@@ -70,7 +129,13 @@ const FoodsInProgress = () => {
           />
           <h1 data-testid="recipe-title">{recipeInProgress.strMeal}</h1>
           <button type="button" data-testid="share-btn">compartilhar</button>
-          <button type="button" data-testid="favorite-btn">favoritar</button>
+          <button
+            type="button"
+            data-testid="favorite-btn"
+            onClick={ handleButtonFavorite }
+          >
+            <img alt="favoritar" src={ favorite ? blackHeartIcon : whiteHeartIcon } />
+          </button>
           <p data-testid="recipe-category">{recipeInProgress.strCategory}</p>
           <ul>
             {
@@ -84,7 +149,7 @@ const FoodsInProgress = () => {
                   >
                     <input
                       type="checkbox"
-                      onChange={ handleChangeCheckbox }
+                      onChange={ (event) => handleChangeCheckbox(event, index) }
                       name={ index }
                       checked={ finishedIngredient[index] }
                     />

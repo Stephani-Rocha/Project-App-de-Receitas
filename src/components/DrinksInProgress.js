@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import './DrinksProgress.css';
 
+const setLocalStorage = () => {
+  const cocktails = {};
+  const meals = {};
+  localStorage.setItem('inProgressRecipes', JSON.stringify({ cocktails, meals }));
+};
+
 const DrinksInProgress = () => {
   const params = useParams();
   const history = useHistory();
@@ -41,9 +47,26 @@ const DrinksInProgress = () => {
     }
   }, [recipeInProgressDrinks]);
 
-  const handleChangeCheckbox = ({ target }) => {
+  const handleChangeCheckbox = ({ target }, index) => {
     const { name } = target;
+    const { id } = params;
     setFinishedIngredient((prevState) => ({ ...prevState, [name]: !prevState[name] }));
+
+    const getStorage2 = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    if (getStorage2.cocktails[id].includes(index)) {
+      const filterStorage = getStorage2.cocktails[id]
+        .filter((ingredient) => ingredient !== index);
+      localStorage.setItem('inProgressRecipes', JSON.stringify({
+        ...getStorage2, cocktails: { [id]: filterStorage } }));
+    } else {
+      const newSetStorage2 = {
+        ...getStorage2,
+        cocktails: {
+          [id]: [...getStorage2.cocktails[id], index],
+        },
+      };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newSetStorage2));
+    }
   };
 
   useEffect(() => {
@@ -58,6 +81,31 @@ const DrinksInProgress = () => {
       setDisabledBtn(true);
     }
   }, [finishedIngredient, ingredients]);
+
+  useEffect(() => {
+    const { id } = params;
+    if (!JSON.parse(localStorage.getItem('inProgressRecipes'))) {
+      setLocalStorage();
+    } else {
+      const getStorage3 = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const objeto = getStorage3.cocktails[id]
+        .map((idIngredient) => ({ [idIngredient]: true }));
+      setFinishedIngredient(objeto);
+    }
+    const { cocktails } = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const saveRecipes = Object.keys(cocktails).some((idRecipe) => idRecipe === id);
+    if (!saveRecipes) {
+      const getStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      const newSetStorage = {
+        ...getStorage,
+        cocktails: {
+          ...getStorage.cocktails,
+          [id]: [],
+        },
+      };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(newSetStorage));
+    }
+  }, []);
 
   return (
     <div>
@@ -91,7 +139,7 @@ const DrinksInProgress = () => {
                   >
                     <input
                       type="checkbox"
-                      onChange={ handleChangeCheckbox }
+                      onChange={ (event) => handleChangeCheckbox(event, index) }
                       name={ index }
                       checked={ finishedIngredient[index] }
                     />
